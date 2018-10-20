@@ -1,4 +1,5 @@
 import java.awt.Desktop;
+import java.io.File;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -17,6 +18,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.media.AudioClip;
 import net.dean.jraw.models.Listing;
 import net.dean.jraw.models.Submission;
 import net.dean.jraw.models.SubredditSort;
@@ -37,6 +39,7 @@ public class FXMLCoreController {
 	
 	public boolean threadEnabled = false;
 	Thread t;
+	AudioClip alert;
 
 	@FXML
 	protected void handleStartButton(ActionEvent event) {
@@ -59,9 +62,9 @@ public class FXMLCoreController {
 		postList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Result>() {
 			@Override
 		    public void changed(ObservableValue<? extends Result> observable, Result oldValue, Result newValue) {
-				titleLabel.setText(newValue.getTitle().substring(0, Math.min(newValue.getTitle().length(), 64)));
-				subredditLabel.setText(newValue.getSubreddit().substring(0, Math.min(newValue.getSubreddit().length(), 64)));
-				urlLabel.setText(newValue.getUrl().substring(0, Math.min(newValue.getUrl().length(), 64)));
+				titleLabel.setText(newValue.getTitle().substring(0, Math.min(newValue.getTitle().length(), 60)));
+				subredditLabel.setText(newValue.getSubreddit().substring(0, Math.min(newValue.getSubreddit().length(), 60)));
+				urlLabel.setText(newValue.getUrl().substring(0, Math.min(newValue.getUrl().length(), 60)));
 				urlLabel.setOnAction(new EventHandler<ActionEvent>() {
 				    @Override
 				    public void handle(ActionEvent e) {
@@ -74,6 +77,8 @@ public class FXMLCoreController {
 				});
 		    }
 		});
+		alert = new AudioClip(this.getClass().getResource("alert.wav").toExternalForm());
+		alert.setVolume(.2);
 	}
 
 	@FXML
@@ -95,7 +100,7 @@ class UpdateList implements Runnable {
 	private FXMLCoreController controllerInstance;
 	Queue<Result> resultQueue = new LinkedList<>();
 	List<String> stringList = Arrays.asList("steam key", "giving away", "giveaway", "cd key", "steam code", "cd code",
-			"spare code", "spare key", "extra key", "extra code", "give away", "the");
+			"spare code", "spare key", "extra key", "extra code", "give away");
 
 	public UpdateList(FXMLCoreController instance) {
 		controllerInstance = instance;
@@ -116,6 +121,7 @@ class UpdateList implements Runnable {
 							addToQueue(r);
 							Runnable updater = new Runnable() {
 								public void run() {
+									controllerInstance.alert.play();
 									controllerInstance.getPostList().getItems().add(r);
 								}
 							};
