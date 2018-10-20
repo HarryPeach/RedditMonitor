@@ -8,13 +8,13 @@ public class Result {
 	private String subreddit;
 	private String title;
 	private String url;
-	private String shortUrl;
+	private String id;
 	
-	public Result(String subreddit, String title, String url, String shortUrl) {
+	public Result(String subreddit, String title, String url, String id) {
 		this.subreddit = subreddit;
 		this.title = title;
 		this.url = url;
-		this.shortUrl = shortUrl;
+		this.id = id;
 	}
 	
 	/**
@@ -49,11 +49,11 @@ public class Result {
 	}
 	
 	/**
-	 * Gets the short URL of the post
-	 * @return short URL string
+	 * Gets the ID of the post
+	 * @return ID string
 	 */
-	public String getShortUrl() {
-		return shortUrl;
+	public String getId() {
+		return id;
 	}
 	
 }
