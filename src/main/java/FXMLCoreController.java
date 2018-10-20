@@ -100,9 +100,19 @@ public class FXMLCoreController {
 			}
 		});
 
+		
+	}
+	
+	/**
+	 * Plays an alert sound to notify the user that a match has been found
+	 */
+	public void playAlert() {
+		if(!Main.preferences.getPreferences().getBoolean("PLAY_ALERT", true))
+			return;
+		
 		// Create a new audio clip from resources and play it to alert the user
 		alert = new AudioClip(this.getClass().getResource("alert.wav").toExternalForm());
-		alert.setVolume(.2);
+		alert.setVolume(Main.preferences.getPreferences().getDouble("ALERT_VOLUME", 0.2));
 	}
 
 	/**
@@ -141,7 +151,7 @@ class UpdateList implements Runnable {
 	
 	// The list of strings that are searched for within a posts title
 	List<String> stringList = Arrays.asList("steam key", "giving away", "giveaway", "cd key", "steam code", "cd code",
-			"spare code", "spare key", "extra key", "extra code", "give away");
+			"spare code", "spare key", "extra key", "extra code", "give away", "the");
 
 	public UpdateList(FXMLCoreController instance) {
 		controllerInstance = instance;
@@ -167,7 +177,7 @@ class UpdateList implements Runnable {
 							addToQueue(r);
 							Runnable updater = new Runnable() {
 								public void run() {
-									controllerInstance.alert.play();
+									controllerInstance.playAlert();
 									controllerInstance.getPostList().getItems().add(r);
 								}
 							};
