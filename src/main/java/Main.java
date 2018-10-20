@@ -6,6 +6,8 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 	
+	PreferencesHelper preferences;
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -16,6 +18,8 @@ public class Main extends Application {
 			
 			// Stop users from resizing the UI
 			primaryStage.setResizable(false);
+			
+			preferences = new PreferencesHelper();
 			
 			primaryStage.show();
 		} catch (Exception e) {
