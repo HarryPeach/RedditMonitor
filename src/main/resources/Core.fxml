@@ -9,6 +9,6 @@
    <children>
       <TextArea prefHeight="200.0" prefWidth="200.0" />
       <ListView fx:id="postList" layoutY="200.0" prefHeight="200.0" prefWidth="359.0" />
-      <Button onAction="#handleSampleButton" layoutX="395.0" layoutY="69.0" mnemonicParsing="false" text="Start" />
+      <Button onAction="#handleStartButton" fx:id="startButton" layoutX="395.0" layoutY="69.0" mnemonicParsing="false" text="Start" />
    </children>
 </AnchorPane>
