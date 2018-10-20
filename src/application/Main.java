@@ -5,12 +5,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import net.dean.jraw.RedditClient;
-import net.dean.jraw.http.NetworkAdapter;
-import net.dean.jraw.http.OkHttpNetworkAdapter;
-import net.dean.jraw.http.UserAgent;
-import net.dean.jraw.oauth.Credentials;
-import net.dean.jraw.oauth.OAuthHelper;
 
 public class Main extends Application {
 	
