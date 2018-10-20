@@ -54,6 +54,8 @@ public class FXMLCoreController {
 	protected void initialize() {
 		t = new Thread(new UpdateList(this));
 		t.setDaemon(true);
+		
+		// Handle selection of listview items
 		postList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Result>() {
 			@Override
 		    public void changed(ObservableValue<? extends Result> observable, Result oldValue, Result newValue) {
