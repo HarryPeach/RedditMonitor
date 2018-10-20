@@ -148,11 +148,10 @@ class UpdateList implements Runnable {
 	}
 
 	public void run() {
-		SubredditReference all = controllerInstance.redditHelper.getRedditClient().subreddit("all");
-
 		if (controllerInstance.redditHelper == null) {
 			controllerInstance.redditHelper = new RedditHelper();
 		}
+		SubredditReference all = controllerInstance.redditHelper.getRedditClient().subreddit("all");
 
 		while (true) {
 			if (controllerInstance.threadEnabled) {
