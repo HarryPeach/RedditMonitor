@@ -3,6 +3,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 public class Main extends Application {
 	
@@ -12,9 +13,11 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Core.fxml"));
-			Scene scene = new Scene(root, 500, 500);
+			Scene scene = new Scene(root, 500, 300);
 			primaryStage.setTitle("RedditMonitor");
 			primaryStage.setScene(scene);
+			primaryStage.setResizable(false);
+			primaryStage.initStyle(StageStyle.UTILITY);
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();
