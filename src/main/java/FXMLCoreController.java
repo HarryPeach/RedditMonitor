@@ -36,6 +36,8 @@ public class FXMLCoreController {
 	@FXML
 	private Hyperlink urlLabel;
 	
+	private static final int MAX_LABEL_CHARS = 60;
+	
 	public boolean threadEnabled = false;
 	public RedditHelper redditHelper;
 	Thread t;
@@ -62,14 +64,19 @@ public class FXMLCoreController {
 		postList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Result>() {
 			@Override
 		    public void changed(ObservableValue<? extends Result> observable, Result oldValue, Result newValue) {
-				titleLabel.setText(newValue.getTitle().substring(0, Math.min(newValue.getTitle().length(), 60)));
-				subredditLabel.setText(newValue.getSubreddit().substring(0, Math.min(newValue.getSubreddit().length(), 60)));
-				urlLabel.setText(newValue.getUrl().substring(0, Math.min(newValue.getUrl().length(), 60)));
+				String titleText = newValue.getTitle();
+				titleLabel.setText(titleText.substring(0, Math.min(titleText.length(), MAX_LABEL_CHARS)));
+				
+				String subredditText = newValue.getSubreddit();
+				subredditLabel.setText(subredditText.substring(0, Math.min(subredditText.length(), MAX_LABEL_CHARS)));
+				
+				String urlText = newValue.getUrl();
+				urlLabel.setText(urlText.substring(0, Math.min(urlText.length(), MAX_LABEL_CHARS)));
 				urlLabel.setOnAction(new EventHandler<ActionEvent>() {
 				    @Override
 				    public void handle(ActionEvent e) {
 				    	try {
-							Desktop.getDesktop().browse(new URI(newValue.getUrl()));
+							Desktop.getDesktop().browse(new URI(urlText));
 						} catch (IOException | URISyntaxException e1) {
 							e1.printStackTrace();
 						}
