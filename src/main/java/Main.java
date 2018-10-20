@@ -6,7 +6,7 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 	
-	PreferencesHelper preferences;
+	public static PreferencesHelper preferences;
 	
 	@Override
 	public void start(Stage primaryStage) {
