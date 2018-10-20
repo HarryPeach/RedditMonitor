@@ -1,12 +1,21 @@
+import java.awt.Desktop;
+import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
 
 import javafx.application.Platform;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Hyperlink;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import net.dean.jraw.models.Listing;
 import net.dean.jraw.models.Submission;
@@ -19,6 +28,13 @@ public class FXMLCoreController {
 	private ListView<Result> postList;
 	@FXML
 	private Button startButton;
+	@FXML
+	private Label titleLabel;
+	@FXML
+	private Label subredditLabel;
+	@FXML
+	private Hyperlink urlLabel;
+	
 	public boolean threadEnabled = false;
 	Thread t;
 
@@ -38,6 +54,24 @@ public class FXMLCoreController {
 	protected void initialize() {
 		t = new Thread(new UpdateList(this));
 		t.setDaemon(true);
+		postList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Result>() {
+			@Override
+		    public void changed(ObservableValue<? extends Result> observable, Result oldValue, Result newValue) {
+				titleLabel.setText(newValue.getTitle().substring(0, Math.min(newValue.getTitle().length(), 64)));
+				subredditLabel.setText(newValue.getSubreddit().substring(0, Math.min(newValue.getSubreddit().length(), 64)));
+				urlLabel.setText(newValue.getUrl().substring(0, Math.min(newValue.getUrl().length(), 64)));
+				urlLabel.setOnAction(new EventHandler<ActionEvent>() {
+				    @Override
+				    public void handle(ActionEvent e) {
+				    	try {
+							Desktop.getDesktop().browse(new URI(newValue.getUrl()));
+						} catch (IOException | URISyntaxException e1) {
+							e1.printStackTrace();
+						}
+				    }
+				});
+		    }
+		});
 	}
 
 	@FXML
