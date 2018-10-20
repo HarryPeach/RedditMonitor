@@ -3,7 +3,6 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import javafx.stage.StageStyle;
 
 public class Main extends Application {
 	
@@ -14,7 +13,10 @@ public class Main extends Application {
 			Scene scene = new Scene(root, 500, 300);
 			primaryStage.setTitle("RedditMonitor");
 			primaryStage.setScene(scene);
+			
+			// Stop users from resizing the UI
 			primaryStage.setResizable(false);
+			
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();

@@ -24,6 +24,12 @@ import net.dean.jraw.models.SubredditSort;
 import net.dean.jraw.pagination.DefaultPaginator;
 import net.dean.jraw.references.SubredditReference;
 
+/**
+ * The controller for the primary stage
+ * 
+ * @author harry
+ *
+ */
 public class FXMLCoreController {
 	@FXML
 	private ListView<Result> postList;
@@ -35,68 +41,92 @@ public class FXMLCoreController {
 	private Label subredditLabel;
 	@FXML
 	private Hyperlink urlLabel;
-	
+
 	private static final int MAX_LABEL_CHARS = 60;
-	
+
 	public boolean threadEnabled = false;
 	public RedditHelper redditHelper;
 	Thread t;
 	AudioClip alert;
 
+	/**
+	 * Handles what should happen when the start button is pressed on the primary
+	 * stage
+	 * 
+	 * @param event
+	 */
 	@FXML
 	protected void handleStartButton(ActionEvent event) {
 		if (t.getState().equals(Thread.State.NEW)) {
 			t.start();
 		}
 		threadEnabled = !threadEnabled;
-		String buttonText = (startButton.getText().equals("Start"))
-				? ("Stop")
-				: ("Start");
+		String buttonText = (startButton.getText().equals("Start")) ? ("Stop") : ("Start");
 		startButton.setText(buttonText);
 	}
 
+	/**
+	 * Called when the stage is initialized
+	 */
 	@FXML
 	protected void initialize() {
+		// Instantiate the Updater thread and make it a daemon so that it exits with the
+		// application
 		t = new Thread(new UpdateList(this));
 		t.setDaemon(true);
-		
-		// Handle selection of listview items
+
+		// Handle selection of ListView items
 		postList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Result>() {
 			@Override
-		    public void changed(ObservableValue<? extends Result> observable, Result oldValue, Result newValue) {
+			public void changed(ObservableValue<? extends Result> observable, Result oldValue, Result newValue) {
 				String titleText = newValue.getTitle();
 				titleLabel.setText(titleText.substring(0, Math.min(titleText.length(), MAX_LABEL_CHARS)));
-				
+
 				String subredditText = newValue.getSubreddit();
 				subredditLabel.setText(subredditText.substring(0, Math.min(subredditText.length(), MAX_LABEL_CHARS)));
-				
+
 				String urlText = newValue.getUrl();
 				urlLabel.setText(urlText.substring(0, Math.min(urlText.length(), MAX_LABEL_CHARS)));
 				urlLabel.setOnAction(new EventHandler<ActionEvent>() {
-				    @Override
-				    public void handle(ActionEvent e) {
-				    	try {
+					@Override
+					public void handle(ActionEvent e) {
+						try {
 							Desktop.getDesktop().browse(new URI(urlText));
 						} catch (IOException | URISyntaxException e1) {
 							e1.printStackTrace();
 						}
-				    }
+					}
 				});
-		    }
+			}
 		});
+
+		// Create a new audio clip from resources and play it to alert the user
 		alert = new AudioClip(this.getClass().getResource("alert.wav").toExternalForm());
 		alert.setVolume(.2);
 	}
 
+	/**
+	 * Whenever the application is exited, stop the UpdateList thread
+	 * 
+	 * @param event
+	 */
 	@FXML
 	public void exitApplication(ActionEvent event) {
-		threadEnabled = false;
+		shutdown();
 	}
 
+	/**
+	 * Returns the ListView that holds all of the posts
+	 * 
+	 * @return ListView of posts
+	 */
 	public ListView<Result> getPostList() {
 		return postList;
 	}
 
+	/**
+	 * Can be called to stop the UpdateList thread
+	 */
 	public void shutdown() {
 		threadEnabled = false;
 	}
@@ -106,6 +136,7 @@ public class FXMLCoreController {
 class UpdateList implements Runnable {
 	private FXMLCoreController controllerInstance;
 	Queue<Result> resultQueue = new LinkedList<>();
+	// The list of strings that are searched for within a posts title
 	List<String> stringList = Arrays.asList("steam key", "giving away", "giveaway", "cd key", "steam code", "cd code",
 			"spare code", "spare key", "extra key", "extra code", "give away");
 
@@ -115,8 +146,8 @@ class UpdateList implements Runnable {
 
 	public void run() {
 		SubredditReference all = controllerInstance.redditHelper.getRedditClient().subreddit("all");
-		
-		if(controllerInstance.redditHelper == null) {
+
+		if (controllerInstance.redditHelper == null) {
 			controllerInstance.redditHelper = new RedditHelper();
 		}
 
@@ -128,6 +159,8 @@ class UpdateList implements Runnable {
 
 					for (Submission s : submissions) {
 						Result r = new Result(s.getSubreddit(), s.getTitle(), s.getUrl(), s.getId());
+						// Checks whether the submission title contains a keyword, and whether it is
+						// already in the result queue
 						if (titleContainsWordList(r.getTitle(), stringList) && !containsResult(resultQueue, r)) {
 							addToQueue(r);
 							Runnable updater = new Runnable() {
@@ -152,16 +185,30 @@ class UpdateList implements Runnable {
 			}
 		}
 	}
-	
+
+	/**
+	 * Checks whether a string contains another string from a list of words
+	 * 
+	 * @param word     The string to search
+	 * @param wordList The list of strings to compare
+	 * @return Whether an String item contains a string within a list
+	 */
 	private boolean titleContainsWordList(String word, List<String> wordList) {
-		for(String s : wordList) {
-			if(word.toLowerCase().contains(s)) {
+		for (String s : wordList) {
+			if (word.toLowerCase().contains(s)) {
 				return true;
 			}
 		}
 		return false;
 	}
 
+	/**
+	 * Checks whether a result is in the result queue
+	 * 
+	 * @param resultQueueIn The result queue to search
+	 * @param testResult    The result to search for
+	 * @return Whether a result is in the result queue
+	 */
 	private boolean containsResult(Queue<Result> resultQueueIn, Result testResult) {
 		for (Result result : resultQueueIn) {
 			if (result.getId().equals(testResult.getId())) {
@@ -171,6 +218,12 @@ class UpdateList implements Runnable {
 		return false;
 	}
 
+	/**
+	 * Adds items to the result queue and pops the bottom item if the queue gets
+	 * full
+	 * 
+	 * @param r Item to be added to the queue
+	 */
 	private void addToQueue(Result r) {
 		if (resultQueue.size() >= 100) {
 			resultQueue.remove();
