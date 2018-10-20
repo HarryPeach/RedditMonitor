@@ -37,6 +37,7 @@ public class FXMLCoreController {
 	private Hyperlink urlLabel;
 	
 	public boolean threadEnabled = false;
+	public RedditHelper redditHelper;
 	Thread t;
 	AudioClip alert;
 
@@ -106,7 +107,11 @@ class UpdateList implements Runnable {
 	}
 
 	public void run() {
-		SubredditReference all = Main.redditHelper.getRedditClient().subreddit("all");
+		SubredditReference all = controllerInstance.redditHelper.getRedditClient().subreddit("all");
+		
+		if(controllerInstance.redditHelper == null) {
+			controllerInstance.redditHelper = new RedditHelper();
+		}
 
 		while (true) {
 			if (controllerInstance.threadEnabled) {

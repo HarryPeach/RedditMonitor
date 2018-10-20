@@ -7,8 +7,6 @@ import javafx.stage.StageStyle;
 
 public class Main extends Application {
 	
-	public static RedditHelper redditHelper;
-	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -21,7 +19,6 @@ public class Main extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		redditHelper = new RedditHelper();
 	}
 
 	public static void main(String[] args) {
