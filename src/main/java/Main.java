@@ -17,7 +17,6 @@ public class Main extends Application {
 			primaryStage.setTitle("RedditMonitor");
 			primaryStage.setScene(scene);
 			primaryStage.setResizable(false);
-			primaryStage.initStyle(StageStyle.UTILITY);
 			primaryStage.show();
 		} catch (Exception e) {
 			e.printStackTrace();

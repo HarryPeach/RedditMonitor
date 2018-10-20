@@ -7,7 +7,7 @@
 
 <AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="FXMLCoreController">
    <children>
-      <ListView fx:id="postList" layoutY="80.0" prefHeight="220.0" prefWidth="500.0" />
+      <ListView fx:id="postList" layoutY="80.0" layoutX="5.0" prefHeight="220.0" prefWidth="500.0" />
       <Button fx:id="startButton" layoutX="439.0" layoutY="27.0" mnemonicParsing="false" onAction="#handleStartButton" text="Start" />
       <Label layoutX="20.0" layoutY="14.0" text="Title: " />
       <Label layoutX="20.0" layoutY="31.0" text="Subreddit:" />
