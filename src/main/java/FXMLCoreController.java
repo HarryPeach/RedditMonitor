@@ -112,7 +112,7 @@ public class FXMLCoreController {
 		
 		// Create a new audio clip from resources and play it to alert the user
 		alert = new AudioClip(this.getClass().getResource("alert.wav").toExternalForm());
-		alert.setVolume(0.2);
+		alert.setVolume(Main.preferences.getPreferences().getDouble("ALERT_VOLUME", 0.2));
 	}
 
 	/**
