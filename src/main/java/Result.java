@@ -17,36 +17,43 @@ public class Result {
 		this.shortUrl = shortUrl;
 	}
 	
+	/**
+	 * Default string return method which returns the title
+	 */
+	public String toString() {
+		return title;
+	}
+	
+	/**
+	 * Gets the subreddit name
+	 * @return subreddit string
+	 */
 	public String getSubreddit() {
 		return subreddit;
 	}
 
-	public void setSubreddit(String subreddit) {
-		this.subreddit = subreddit;
-	}
-
+	/**
+	 * Gets the title of the post
+	 * @return title string
+	 */
 	public String getTitle() {
 		return title;
 	}
 
-	public void setTitle(String title) {
-		this.title = title;
-	}
-
+	/**
+	 * Gets the URL of the post
+	 * @return URL string
+	 */
 	public String getUrl() {
 		return url;
 	}
-
-	public void setUrl(String url) {
-		this.url = url;
-	}
-
+	
+	/**
+	 * Gets the short URL of the post
+	 * @return short URL string
+	 */
 	public String getShortUrl() {
 		return shortUrl;
-	}
-
-	public void setShortUrl(String shortUrl) {
-		this.shortUrl = shortUrl;
 	}
 	
 }
