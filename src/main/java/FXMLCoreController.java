@@ -135,7 +135,10 @@ public class FXMLCoreController {
 
 class UpdateList implements Runnable {
 	private FXMLCoreController controllerInstance;
+	private static final int MAX_RESULT_QUEUE_SIZE = 100;
+	private static final int SUBMISSION_LIMIT = 50;
 	Queue<Result> resultQueue = new LinkedList<>();
+	
 	// The list of strings that are searched for within a posts title
 	List<String> stringList = Arrays.asList("steam key", "giving away", "giveaway", "cd key", "steam code", "cd code",
 			"spare code", "spare key", "extra key", "extra code", "give away");
@@ -154,7 +157,7 @@ class UpdateList implements Runnable {
 		while (true) {
 			if (controllerInstance.threadEnabled) {
 				try {
-					DefaultPaginator<Submission> paginator = all.posts().sorting(SubredditSort.NEW).limit(30).build();
+					DefaultPaginator<Submission> paginator = all.posts().sorting(SubredditSort.NEW).limit(SUBMISSION_LIMIT).build();
 					Listing<Submission> submissions = paginator.next();
 
 					for (Submission s : submissions) {
@@ -225,7 +228,7 @@ class UpdateList implements Runnable {
 	 * @param r Item to be added to the queue
 	 */
 	private void addToQueue(Result r) {
-		if (resultQueue.size() >= 100) {
+		if (resultQueue.size() >= MAX_RESULT_QUEUE_SIZE) {
 			resultQueue.remove();
 			resultQueue.add(r);
 		} else {
