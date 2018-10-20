@@ -5,10 +5,17 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import net.dean.jraw.RedditClient;
+import net.dean.jraw.http.NetworkAdapter;
+import net.dean.jraw.http.OkHttpNetworkAdapter;
 import net.dean.jraw.http.UserAgent;
 import net.dean.jraw.oauth.Credentials;
+import net.dean.jraw.oauth.OAuthHelper;
 
 public class Main extends Application {
+	
+	public static RedditHelper redditHelper;
+	
 	@Override
 	public void start(Stage primaryStage) {
 		try {
@@ -20,11 +27,7 @@ public class Main extends Application {
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		UserAgent userAgent = new UserAgent("bot", "application.redditmonitor", "0.1", "JellyGiant");
-		// MyCredentials is a class that contains static constants for sensitive data.
-		// It is hidden from the git repository.
-		Credentials credentials = Credentials.script(MyCredentials.username, MyCredentials.password,
-				MyCredentials.clientId, MyCredentials.secret);
+		redditHelper = new RedditHelper();
 	}
 
 	public static void main(String[] args) {
