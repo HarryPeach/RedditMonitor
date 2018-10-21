@@ -10,6 +10,17 @@
 apply plugin: 'application'
 mainClassName = "Main"
 
+def getGitHash = { ->
+    def stdout = new ByteArrayOutputStream()
+    exec {
+        commandLine 'git', 'rev-parse', '--short', 'HEAD'
+        standardOutput = stdout
+    }
+    return stdout.toString().trim()
+}
+
+version = "${getGitHash()}"
+
 // In this section you declare where to find the dependencies of your project
 repositories {
     // Use jcenter for resolving your dependencies.
@@ -29,4 +40,3 @@ dependencies {
     
     compile "net.dean.jraw:JRAW:1.1.0"
 }
-

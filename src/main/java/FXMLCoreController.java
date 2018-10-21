@@ -82,7 +82,6 @@ public class FXMLCoreController {
 		alert.setContentText("Copyright (C) Harry Peach\n"
 				+ "Licensed under the GNU GPL v3\n"
 				+ "https://github.com/HarryPeach");
-
 		alert.showAndWait();
 	}
 	
