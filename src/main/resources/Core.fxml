@@ -26,7 +26,7 @@
 				</Menu>
 				<Menu text="Help">
 					<items>
-						<MenuItem text="About" />
+						<MenuItem text="About" onAction="handleAboutButton" />
 						<SeparatorMenuItem />
 						<MenuItem text="Exit" />
 					</items>

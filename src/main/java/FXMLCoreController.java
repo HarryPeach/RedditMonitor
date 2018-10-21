@@ -13,6 +13,7 @@ import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
@@ -57,11 +58,28 @@ public class FXMLCoreController {
 	 */
 	@FXML
 	protected void handleStartButton(ActionEvent event) {
-		if(threadEnabled) {
+		if (threadEnabled) {
 			disableThread();
-		}else {
+		} else {
 			enableThread();
 		}
+	}
+
+	/**
+	 * Displays an 'About Dialog' when the about button is clicked
+	 * 
+	 * @param event
+	 */
+	@FXML
+	protected void handleAboutButton(ActionEvent event) {
+		Alert alert = new Alert(Alert.AlertType.INFORMATION);
+		alert.setTitle("About");
+		alert.setHeaderText("About Reddit Monitor");
+		alert.setContentText("Copyright (C) Harry Peach\n"
+				+ "Licensed under the GNU GPL v3\n"
+				+ "https://github.com/HarryPeach");
+
+		alert.showAndWait();
 	}
 
 	/**
@@ -99,9 +117,8 @@ public class FXMLCoreController {
 			}
 		});
 
-		
 	}
-	
+
 	/**
 	 * Enables the thread and updates UI
 	 */
@@ -112,7 +129,7 @@ public class FXMLCoreController {
 		startButton.setText("Stop");
 		threadEnabled = true;
 	}
-	
+
 	/**
 	 * Disables the thread and updates UI
 	 */
@@ -120,14 +137,14 @@ public class FXMLCoreController {
 		startButton.setText("Start");
 		threadEnabled = false;
 	}
-	
+
 	/**
 	 * Plays an alert sound to notify the user that a match has been found
 	 */
 	public void playAlert() {
-		if(!Main.preferences.getPreferences().getBoolean("PLAY_ALERT", true))
+		if (!Main.preferences.getPreferences().getBoolean("PLAY_ALERT", true))
 			return;
-		
+
 		// Create a new audio clip from resources and play it to alert the user
 		alert = new AudioClip(this.getClass().getResource("alert.wav").toExternalForm());
 		alert.setVolume(Main.preferences.getPreferences().getDouble("ALERT_VOLUME", 0.2));
@@ -166,7 +183,7 @@ class UpdateList implements Runnable {
 	private static final int MAX_RESULT_QUEUE_SIZE = 100;
 	private static final int SUBMISSION_LIMIT = 50;
 	Queue<Result> resultQueue = new LinkedList<>();
-	
+
 	// The list of strings that are searched for within a posts title
 	List<String> stringList = Arrays.asList("steam key", "giving away", "giveaway", "cd key", "steam code", "cd code",
 			"spare code", "spare key", "extra key", "extra code", "give away");
@@ -184,30 +201,31 @@ class UpdateList implements Runnable {
 		try {
 			while (true) {
 				if (controllerInstance.threadEnabled) {
-						DefaultPaginator<Submission> paginator = all.posts().sorting(SubredditSort.NEW).limit(SUBMISSION_LIMIT).build();
-						Listing<Submission> submissions = paginator.next();
+					DefaultPaginator<Submission> paginator = all.posts().sorting(SubredditSort.NEW)
+							.limit(SUBMISSION_LIMIT).build();
+					Listing<Submission> submissions = paginator.next();
 
-						for (Submission s : submissions) {
-							Result r = new Result(s.getSubreddit(), s.getTitle(), s.getUrl(), s.getId());
-							// Checks whether the submission title contains a keyword, and whether it is
-							// already in the result queue
-							if (titleContainsWordList(r.getTitle(), stringList) && !containsResult(resultQueue, r)) {
-								addToQueue(r);
-								Runnable updater = new Runnable() {
-									public void run() {
-										controllerInstance.playAlert();
-										controllerInstance.getPostList().getItems().add(r);
-									}
-								};
-								Platform.runLater(updater);
-							}
+					for (Submission s : submissions) {
+						Result r = new Result(s.getSubreddit(), s.getTitle(), s.getUrl(), s.getId());
+						// Checks whether the submission title contains a keyword, and whether it is
+						// already in the result queue
+						if (titleContainsWordList(r.getTitle(), stringList) && !containsResult(resultQueue, r)) {
+							addToQueue(r);
+							Runnable updater = new Runnable() {
+								public void run() {
+									controllerInstance.playAlert();
+									controllerInstance.getPostList().getItems().add(r);
+								}
+							};
+							Platform.runLater(updater);
 						}
-						Thread.sleep(1000);
+					}
+					Thread.sleep(1000);
 				} else {
 					Thread.sleep(1000);
 				}
 			}
-		}catch(Exception e) {
+		} catch (Exception e) {
 			Runnable updater = new Runnable() {
 				public void run() {
 					e.printStackTrace();
