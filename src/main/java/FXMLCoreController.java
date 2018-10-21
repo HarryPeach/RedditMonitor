@@ -60,6 +60,7 @@ public class FXMLCoreController {
 	 */
 	@FXML
 	protected void handleStartButton(ActionEvent event) {
+		LOGGER.finest("Start/stop button clicked by user");
 		if (threadEnabled) {
 			disableThread();
 		} else {
@@ -74,6 +75,7 @@ public class FXMLCoreController {
 	 */
 	@FXML
 	protected void handleAboutButton(ActionEvent event) {
+		LOGGER.finest("Showing alert dialog");
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setTitle("About");
 		alert.setHeaderText("About Reddit Monitor");
@@ -90,6 +92,7 @@ public class FXMLCoreController {
 	 */
 	@FXML
 	protected void handleExitButton(ActionEvent event) {
+		LOGGER.fine("Exiting program because user pressed exit button");
 		disableThread();
 		System.exit(0);
 	}
@@ -120,8 +123,10 @@ public class FXMLCoreController {
 					@Override
 					public void handle(ActionEvent e) {
 						try {
+							LOGGER.fine("Attempting to open selected URL in the users browser");
 							Desktop.getDesktop().browse(new URI(urlText));
 						} catch (IOException | URISyntaxException e1) {
+							LOGGER.warning(e1.getMessage());
 							e1.printStackTrace();
 						}
 					}
@@ -136,6 +141,7 @@ public class FXMLCoreController {
 	 */
 	public void enableThread() {
 		if (t.getState().equals(Thread.State.NEW) || t.getState().equals(Thread.State.TERMINATED)) {
+			LOGGER.fine("Starting thread as it was either NEW or TERMINATED");
 			t.start();
 		}
 		startButton.setText("Stop");
@@ -154,8 +160,10 @@ public class FXMLCoreController {
 	 * Plays an alert sound to notify the user that a match has been found
 	 */
 	public void playAlert() {
-		if (!Main.preferences.getPreferences().getBoolean("PLAY_ALERT", true))
+		if (!Main.preferences.getPreferences().getBoolean("PLAY_ALERT", true)) {
+			LOGGER.finest("Attempted to play alert, but it was disabled by the PLAY_ALERT preference");
 			return;
+		}
 
 		// Create a new audio clip from resources and play it to alert the user
 		alert = new AudioClip(this.getClass().getResource("alert.wav").toExternalForm());
@@ -194,6 +202,7 @@ class UpdateList implements Runnable {
 	private FXMLCoreController controllerInstance;
 	private static final int MAX_RESULT_QUEUE_SIZE = 100;
 	private static final int SUBMISSION_LIMIT = 50;
+	private static final Logger LOGGER = Logger.getLogger(UpdateList.class.getName());
 	Queue<Result> resultQueue = new LinkedList<>();
 
 	// The list of strings that are searched for within a posts title
@@ -241,6 +250,7 @@ class UpdateList implements Runnable {
 			Runnable updater = new Runnable() {
 				public void run() {
 					e.printStackTrace();
+					LOGGER.warning(e.getMessage());
 					controllerInstance.disableThread();
 				}
 			};
