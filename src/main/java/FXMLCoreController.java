@@ -81,6 +81,16 @@ public class FXMLCoreController {
 
 		alert.showAndWait();
 	}
+	
+	/**
+	 * Exits the program entirely
+	 * @param event
+	 */
+	@FXML
+	protected void handleExitButton(ActionEvent event) {
+		disableThread();
+		System.exit(0);
+	}
 
 	/**
 	 * Called when the stage is initialised
