@@ -1,7 +1,7 @@
 # RedditMonitor
 A complete rewrite of the Reddit Giveaway monitor in Java using FXML
 
-Copyright (C) 2018 Harry Oeach
+Copyright (C) 2018 Harry Peach
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
