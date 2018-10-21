@@ -57,16 +57,15 @@ public class FXMLCoreController {
 	 */
 	@FXML
 	protected void handleStartButton(ActionEvent event) {
-		if (t.getState().equals(Thread.State.NEW)) {
-			t.start();
+		if(threadEnabled) {
+			disableThread();
+		}else {
+			enableThread();
 		}
-		threadEnabled = !threadEnabled;
-		String buttonText = (startButton.getText().equals("Start")) ? ("Stop") : ("Start");
-		startButton.setText(buttonText);
 	}
 
 	/**
-	 * Called when the stage is initialized
+	 * Called when the stage is initialised
 	 */
 	@FXML
 	protected void initialize() {
@@ -101,6 +100,25 @@ public class FXMLCoreController {
 		});
 
 		
+	}
+	
+	/**
+	 * Enables the thread and updates UI
+	 */
+	public void enableThread() {
+		if (t.getState().equals(Thread.State.NEW) || t.getState().equals(Thread.State.TERMINATED)) {
+			t.start();
+		}
+		startButton.setText("Stop");
+		threadEnabled = true;
+	}
+	
+	/**
+	 * Disables the thread and updates UI
+	 */
+	public void disableThread() {
+		startButton.setText("Start");
+		threadEnabled = false;
 	}
 	
 	/**
@@ -151,7 +169,7 @@ class UpdateList implements Runnable {
 	
 	// The list of strings that are searched for within a posts title
 	List<String> stringList = Arrays.asList("steam key", "giving away", "giveaway", "cd key", "steam code", "cd code",
-			"spare code", "spare key", "extra key", "extra code", "give away", "the");
+			"spare code", "spare key", "extra key", "extra code", "give away");
 
 	public UpdateList(FXMLCoreController instance) {
 		controllerInstance = instance;
@@ -163,38 +181,40 @@ class UpdateList implements Runnable {
 		}
 		SubredditReference all = controllerInstance.redditHelper.getRedditClient().subreddit("all");
 
-		while (true) {
-			if (controllerInstance.threadEnabled) {
-				try {
-					DefaultPaginator<Submission> paginator = all.posts().sorting(SubredditSort.NEW).limit(SUBMISSION_LIMIT).build();
-					Listing<Submission> submissions = paginator.next();
+		try {
+			while (true) {
+				if (controllerInstance.threadEnabled) {
+						DefaultPaginator<Submission> paginator = all.posts().sorting(SubredditSort.NEW).limit(SUBMISSION_LIMIT).build();
+						Listing<Submission> submissions = paginator.next();
 
-					for (Submission s : submissions) {
-						Result r = new Result(s.getSubreddit(), s.getTitle(), s.getUrl(), s.getId());
-						// Checks whether the submission title contains a keyword, and whether it is
-						// already in the result queue
-						if (titleContainsWordList(r.getTitle(), stringList) && !containsResult(resultQueue, r)) {
-							addToQueue(r);
-							Runnable updater = new Runnable() {
-								public void run() {
-									controllerInstance.playAlert();
-									controllerInstance.getPostList().getItems().add(r);
-								}
-							};
-							Platform.runLater(updater);
+						for (Submission s : submissions) {
+							Result r = new Result(s.getSubreddit(), s.getTitle(), s.getUrl(), s.getId());
+							// Checks whether the submission title contains a keyword, and whether it is
+							// already in the result queue
+							if (titleContainsWordList(r.getTitle(), stringList) && !containsResult(resultQueue, r)) {
+								addToQueue(r);
+								Runnable updater = new Runnable() {
+									public void run() {
+										controllerInstance.playAlert();
+										controllerInstance.getPostList().getItems().add(r);
+									}
+								};
+								Platform.runLater(updater);
+							}
 						}
-					}
+						Thread.sleep(1000);
+				} else {
 					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			} else {
-				try {
-					Thread.sleep(1000);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
 				}
 			}
+		}catch(Exception e) {
+			Runnable updater = new Runnable() {
+				public void run() {
+					e.printStackTrace();
+					controllerInstance.disableThread();
+				}
+			};
+			Platform.runLater(updater);
 		}
 	}
 
