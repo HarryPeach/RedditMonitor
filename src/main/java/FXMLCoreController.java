@@ -24,6 +24,7 @@ import net.dean.jraw.models.Submission;
 import net.dean.jraw.models.SubredditSort;
 import net.dean.jraw.pagination.DefaultPaginator;
 import net.dean.jraw.references.SubredditReference;
+import java.util.logging.Logger;
 
 /**
  * The controller for the primary stage
@@ -44,6 +45,7 @@ public class FXMLCoreController {
 	private Hyperlink urlLabel;
 
 	private static final int MAX_LABEL_CHARS = 60;
+	private static final Logger LOGGER = Logger.getLogger(FXMLCoreController.class.getName());
 
 	public boolean threadEnabled = false;
 	public RedditHelper redditHelper;
