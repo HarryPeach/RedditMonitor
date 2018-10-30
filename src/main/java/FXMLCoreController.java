@@ -230,6 +230,9 @@ class UpdateList implements Runnable {
 						// Checks whether the submission title contains a keyword, and whether it is
 						// already in the result queue
 						if (titleContainsWordList(r.getTitle(), stringList) && !containsResult(resultQueue, r)) {
+							if(Main.preferences.getPreferences().getBoolean("FILTER_NSFW", true) && s.isNsfw())
+								return;
+
 							addToQueue(r);
 							Runnable updater = new Runnable() {
 								public void run() {

@@ -26,6 +26,9 @@ public class PreferencesHelper {
 
 		// Whether or not to play the alert sound
 		preferences.putBoolean("PLAY_ALERT", true);
+		
+		// Whether or not to filter NSFW posts
+		preferences.putBoolean("FILTER_NSFW", true);
 	}
 	
 	/**
