@@ -1,3 +1,4 @@
+package uk.co.harrypeach.misc;
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.http.NetworkAdapter;
 import net.dean.jraw.http.OkHttpNetworkAdapter;

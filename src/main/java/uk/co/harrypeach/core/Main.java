@@ -1,3 +1,4 @@
+package uk.co.harrypeach.core;
 import java.util.logging.Handler;
 import java.util.logging.Level;
 import java.util.logging.LogManager;
@@ -8,6 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
+import uk.co.harrypeach.configuration.ConfigHelper;
 
 public class Main extends Application {
 
@@ -28,7 +30,6 @@ public class Main extends Application {
 			primaryStage.setResizable(false);
 			
 			config = ConfigHelper.getInstance();
-			System.out.println(config.getConfigInstance().getAccountUsername());
 			
 			LOGGER.log(Level.FINEST, "Showing primary stage");
 			primaryStage.show();

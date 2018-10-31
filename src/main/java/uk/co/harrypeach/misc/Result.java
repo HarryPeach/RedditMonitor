@@ -1,3 +1,4 @@
+package uk.co.harrypeach.misc;
 /**
  * Model for each result in the search, bound to the listview.
  * @author harry

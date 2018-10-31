@@ -1,3 +1,4 @@
+package uk.co.harrypeach.ui;
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
@@ -24,6 +25,10 @@ import net.dean.jraw.models.Submission;
 import net.dean.jraw.models.SubredditSort;
 import net.dean.jraw.pagination.DefaultPaginator;
 import net.dean.jraw.references.SubredditReference;
+import uk.co.harrypeach.core.Main;
+import uk.co.harrypeach.misc.RedditHelper;
+import uk.co.harrypeach.misc.Result;
+
 import java.util.logging.Logger;
 
 /**

@@ -8,7 +8,7 @@
 
 // Apply the java-library plugin to add support for Java Library
 apply plugin: 'application'
-mainClassName = "Main"
+mainClassName = "uk.co.harrypeach.core.Main"
 
 def getGitHash = { ->
     def stdout = new ByteArrayOutputStream()

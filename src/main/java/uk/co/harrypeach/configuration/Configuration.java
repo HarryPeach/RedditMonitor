@@ -1,3 +1,4 @@
+package uk.co.harrypeach.configuration;
 
 public class Configuration {
 	

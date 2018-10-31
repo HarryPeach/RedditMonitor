@@ -1,7 +1,10 @@
+package uk.co.harrypeach.configuration;
 import java.io.IOException;
 import java.io.InputStream;
 
 import org.yaml.snakeyaml.Yaml;
+
+import uk.co.harrypeach.core.Main;
 
 public class ConfigHelper {
 	
