@@ -26,9 +26,9 @@ public class Main extends Application {
 
 			// Stop users from resizing the UI
 			primaryStage.setResizable(false);
-
-			config = new ConfigHelper();
-
+			
+			config = ConfigHelper.getInstance();
+			
 			LOGGER.log(Level.FINEST, "Showing primary stage");
 			primaryStage.show();
 		} catch (Exception e) {

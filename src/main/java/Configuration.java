@@ -1,29 +1,37 @@
 
 public class Configuration {
 	
+	private String accountUsername;
 	private boolean nsfwFilteringEnabled;
 	private boolean alertSoundEnabled;
-	private int alertSoundVolume;
+	private double alertSoundVolume;
 	
-	public boolean isnsfwFilteringEnabled() {
+	public boolean isNsfwFilteringEnabled() {
 		return nsfwFilteringEnabled;
 	}
-	public void setFilterNSFW(boolean nsfwFilteringEnabled) {
+	public void setNsfwFilteringEnabled(boolean nsfwFilteringEnabled) {
 		this.nsfwFilteringEnabled = nsfwFilteringEnabled;
 	}
 	
-	public boolean isalertSoundEnabled() {
+	public boolean isAlertSoundEnabled() {
 		return alertSoundEnabled;
 	}
-	public void setalertSoundEnabled(boolean alertSoundEnabled) {
+	public void setAlertSoundEnabled(boolean alertSoundEnabled) {
 		this.alertSoundEnabled = alertSoundEnabled;
 	}
 	
-	public int getAlertSoundVolume() {
+	public double getAlertSoundVolume() {
 		return alertSoundVolume;
 	}
-	public void setAlertSoundVolume(int alertSoundVolume) {
+	public void setAlertSoundVolume(double alertSoundVolume) {
 		this.alertSoundVolume = alertSoundVolume;
+	}
+
+	public String getAccountUsername() {
+		return accountUsername;
+	}
+	public void setAccountUsername(String accountUsername) {
+		this.accountUsername = accountUsername;
 	}
 	
 }

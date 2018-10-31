@@ -101,7 +101,7 @@ public class FXMLCoreController {
 	 * @param event
 	 */
 	@FXML
-	protected void handleconfigButton(ActionEvent event) {
+	protected void handleConfigButton(ActionEvent event) {
 		ConfigDialog configDialog = new ConfigDialog("Configuration", "Configuration Manager");
 		configDialog.show();
 	}
