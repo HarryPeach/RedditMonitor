@@ -14,6 +14,7 @@ public class Main extends Application {
 	public static PreferencesHelper preferences;
 
 	private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+	public static final String VERSION = "0.1";
 
 	@Override
 	public void start(Stage primaryStage) {
