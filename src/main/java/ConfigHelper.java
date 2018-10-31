@@ -20,12 +20,17 @@ public class ConfigHelper {
 	public static ConfigHelper getInstance() {
 		if(configHelperInstance == null)
 			configHelperInstance = new ConfigHelper();
-		initializeConfig();
+		if(configInstance == null)
+			initializeConfig();
+			
 		
 		return configHelperInstance;
 	}
 	
 	public Configuration getConfigInstance() {
+		if(configInstance == null)
+			initializeConfig();
+		
 		return configInstance;
 	}
 	

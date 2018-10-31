@@ -28,7 +28,7 @@ public class Main extends Application {
 			primaryStage.setResizable(false);
 			
 			config = ConfigHelper.getInstance();
-			System.out.println(ConfigHelper.getInstance().getConfigInstance().getAccountUsername());
+			System.out.println(config.getConfigInstance().getAccountUsername());
 			
 			LOGGER.log(Level.FINEST, "Showing primary stage");
 			primaryStage.show();
