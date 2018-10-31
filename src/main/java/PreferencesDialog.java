@@ -1,0 +1,17 @@
+import javafx.scene.control.ButtonBar;
+import javafx.scene.control.ButtonType;
+import javafx.scene.control.Dialog;
+import javafx.scene.layout.HBox;
+
+public class PreferencesDialog extends Dialog<String>{
+	
+	
+	public PreferencesDialog(String title, String header) {
+		setTitle(title);
+		setHeaderText(header);
+		
+		ButtonType okButton = new ButtonType("Done", ButtonBar.ButtonData.OK_DONE);
+		getDialogPane().getButtonTypes().addAll(okButton, ButtonType.CANCEL);
+	}
+
+}

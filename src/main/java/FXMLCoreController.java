@@ -95,6 +95,16 @@ public class FXMLCoreController {
 		disableThread();
 		System.exit(0);
 	}
+	
+	/**
+	 * Opens the preferences manager dialog
+	 * @param event
+	 */
+	@FXML
+	protected void handlePreferencesButton(ActionEvent event) {
+		PreferencesDialog preferencesDialog = new PreferencesDialog("Preferences", "header");
+		preferencesDialog.show();
+	}
 
 	/**
 	 * Called when the stage is initialised
