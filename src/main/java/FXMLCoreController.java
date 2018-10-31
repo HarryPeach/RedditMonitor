@@ -97,13 +97,13 @@ public class FXMLCoreController {
 	}
 	
 	/**
-	 * Opens the preferences manager dialog
+	 * Opens the config manager dialog
 	 * @param event
 	 */
 	@FXML
-	protected void handlePreferencesButton(ActionEvent event) {
-		PreferencesDialog preferencesDialog = new PreferencesDialog("Preferences", "Preferences Manager");
-		preferencesDialog.show();
+	protected void handleconfigButton(ActionEvent event) {
+		ConfigDialog configDialog = new ConfigDialog("Configuration", "Configuration Manager");
+		configDialog.show();
 	}
 
 	/**

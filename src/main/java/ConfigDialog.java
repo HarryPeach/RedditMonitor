@@ -3,10 +3,10 @@ import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.layout.HBox;
 
-public class PreferencesDialog extends Dialog<String>{
+public class ConfigDialog extends Dialog<String>{
 	
 	
-	public PreferencesDialog(String title, String header) {
+	public ConfigDialog(String title, String header) {
 		setTitle(title);
 		setHeaderText(header);
 		
