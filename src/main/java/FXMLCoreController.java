@@ -79,7 +79,7 @@ public class FXMLCoreController {
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setTitle("About");
 		alert.setHeaderText("About Reddit Monitor");
-		alert.setContentText("Copyright (C) Harry Peach\n"
+		alert.setContentText("Version " + Main.VERSION + " Copyright (C) Harry Peach\n"
 				+ "Licensed under the GNU GPL v3\n"
 				+ "https://github.com/HarryPeach");
 		alert.showAndWait();
@@ -94,6 +94,16 @@ public class FXMLCoreController {
 		LOGGER.fine("Exiting program because user pressed exit button");
 		disableThread();
 		System.exit(0);
+	}
+	
+	/**
+	 * Opens the config manager dialog
+	 * @param event
+	 */
+	@FXML
+	protected void handleConfigButton(ActionEvent event) {
+		ConfigDialog configDialog = new ConfigDialog("Configuration", "Configuration Manager");
+		configDialog.show();
 	}
 
 	/**
@@ -159,14 +169,14 @@ public class FXMLCoreController {
 	 * Plays an alert sound to notify the user that a match has been found
 	 */
 	public void playAlert() {
-		if (!Main.preferences.getPreferences().getBoolean("PLAY_ALERT", true)) {
+		if (!Main.config.getConfigInstance().isAlertSoundEnabled()) {
 			LOGGER.finest("Attempted to play alert, but it was disabled by the PLAY_ALERT preference");
 			return;
 		}
 
 		// Create a new audio clip from resources and play it to alert the user
 		alert = new AudioClip(this.getClass().getResource("alert.wav").toExternalForm());
-		alert.setVolume(Main.preferences.getPreferences().getDouble("ALERT_VOLUME", 0.2));
+		alert.setVolume(Main.config.getConfigInstance().getAlertSoundVolume());
 	}
 
 	/**
@@ -230,7 +240,7 @@ class UpdateList implements Runnable {
 						// Checks whether the submission title contains a keyword, and whether it is
 						// already in the result queue
 						if (titleContainsWordList(r.getTitle(), stringList) && !containsResult(resultQueue, r)) {
-							if(Main.preferences.getPreferences().getBoolean("FILTER_NSFW", true) && s.isNsfw())
+							if(Main.config.getConfigInstance().isNsfwFilteringEnabled() && s.isNsfw())
 								return;
 
 							addToQueue(r);

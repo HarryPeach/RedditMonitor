@@ -11,9 +11,10 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
-	public static PreferencesHelper preferences;
+	public static ConfigHelper config;
 
 	private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+	public static final String VERSION = "0.1";
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -25,9 +26,10 @@ public class Main extends Application {
 
 			// Stop users from resizing the UI
 			primaryStage.setResizable(false);
-
-			preferences = new PreferencesHelper();
-
+			
+			config = ConfigHelper.getInstance();
+			System.out.println(config.getConfigInstance().getAccountUsername());
+			
 			LOGGER.log(Level.FINEST, "Showing primary stage");
 			primaryStage.show();
 		} catch (Exception e) {
