@@ -1,6 +1,8 @@
 
 public class Configuration {
 	
+	private static Configuration configInstance = null;
+	
 	private String accountUsername;
 	private boolean nsfwFilteringEnabled;
 	private boolean alertSoundEnabled;

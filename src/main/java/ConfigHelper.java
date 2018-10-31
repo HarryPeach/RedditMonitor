@@ -6,22 +6,27 @@ import org.yaml.snakeyaml.Yaml;
 public class ConfigHelper {
 	
 	private static ConfigHelper configHelperInstance = null;
+	private static Configuration configInstance = null;
 
-	public static ConfigHelper getInstance() {
-		if(configHelperInstance == null)
-			configHelperInstance = new ConfigHelper();
-		
-		// TODO: Move this code
+	private static void initializeConfig() {
 		Yaml yaml = new Yaml();
 		try(InputStream in = Main.class.getClassLoader().getResource("config.yml").openStream()){
-			Configuration config = yaml.loadAs(in, Configuration.class);
+			configInstance = yaml.loadAs(in, Configuration.class);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static ConfigHelper getInstance() {
+		if(configHelperInstance == null)
+			configHelperInstance = new ConfigHelper();
+		initializeConfig();
 		
 		return configHelperInstance;
 	}
 	
-	
+	public Configuration getConfigInstance() {
+		return configInstance;
+	}
 	
 }
