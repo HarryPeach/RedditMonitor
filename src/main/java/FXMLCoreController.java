@@ -169,14 +169,14 @@ public class FXMLCoreController {
 	 * Plays an alert sound to notify the user that a match has been found
 	 */
 	public void playAlert() {
-		if (!Main.preferences.getPreferences().getBoolean("PLAY_ALERT", true)) {
-			LOGGER.finest("Attempted to play alert, but it was disabled by the PLAY_ALERT preference");
-			return;
-		}
+//		if (!Main.preferences.getPreferences().getBoolean("PLAY_ALERT", true)) {
+//			LOGGER.finest("Attempted to play alert, but it was disabled by the PLAY_ALERT preference");
+//			return;
+//		}
 
 		// Create a new audio clip from resources and play it to alert the user
 		alert = new AudioClip(this.getClass().getResource("alert.wav").toExternalForm());
-		alert.setVolume(Main.preferences.getPreferences().getDouble("ALERT_VOLUME", 0.2));
+//		alert.setVolume(Main.preferences.getPreferences().getDouble("ALERT_VOLUME", 0.2));
 	}
 
 	/**
@@ -240,8 +240,8 @@ class UpdateList implements Runnable {
 						// Checks whether the submission title contains a keyword, and whether it is
 						// already in the result queue
 						if (titleContainsWordList(r.getTitle(), stringList) && !containsResult(resultQueue, r)) {
-							if(Main.preferences.getPreferences().getBoolean("FILTER_NSFW", true) && s.isNsfw())
-								return;
+//							if(Main.preferences.getPreferences().getBoolean("FILTER_NSFW", true) && s.isNsfw())
+//								return;
 
 							addToQueue(r);
 							Runnable updater = new Runnable() {

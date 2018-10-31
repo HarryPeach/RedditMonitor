@@ -1,42 +1,14 @@
-import java.util.prefs.Preferences;
+import org.yaml.snakeyaml.Yaml;
 
 public class PreferencesHelper {
+	
+	private static PreferencesHelper preferencesHelperInstance = null;
 
-	private Preferences preferences;
-
-	public PreferencesHelper() {
-		preferences = Preferences.userRoot().node(this.getClass().getName());
-//		preferences.putBoolean("FIRST_RUN", true);
+	public static PreferencesHelper getInstance() {
+		if(preferencesHelperInstance == null)
+			preferencesHelperInstance = new PreferencesHelper();
 		
-		if (preferences.getBoolean("FIRST_RUN", true)) {
-			System.out.println("Running preference reset");
-			resetPreferences();
-			// Make sure the reset code does not run again
-			preferences.putBoolean("FIRST_RUN", false);
-		}
-
-	}
-
-	/**
-	 * Resets the program preferences
-	 */
-	public void resetPreferences() {
-		// Alert sound volume level
-		preferences.putDouble("ALERT_VOLUME", 0.2);
-
-		// Whether or not to play the alert sound
-		preferences.putBoolean("PLAY_ALERT", true);
-		
-		// Whether or not to filter NSFW posts
-		preferences.putBoolean("FILTER_NSFW", true);
+		return preferencesHelperInstance;
 	}
 	
-	/**
-	 * Returns the preferences object
-	 * @return The preferences object
-	 */
-	public Preferences getPreferences() {
-		return preferences;
-	}
-
 }
