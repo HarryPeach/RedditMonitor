@@ -119,6 +119,7 @@ public class FXMLCoreController {
 	@FXML
 	protected void handleDebugAddItem(ActionEvent event) {
 		postList.getItems().add(new Result("/r/test", "This is a test post", "https://reddit.com/", "t35t"));
+		playAlert();
 	}
 	
 	/**
@@ -206,8 +207,9 @@ public class FXMLCoreController {
 		}
 
 		// Create a new audio clip from resources and play it to alert the user
-		alert = new AudioClip(this.getClass().getResource("alert.wav").toExternalForm());
+		alert = new AudioClip(getClass().getClassLoader().getResource("alert.wav").toExternalForm());
 		alert.setVolume(Main.config.getConfigInstance().getAlertSoundVolume());
+		alert.play();
 	}
 
 	/**
