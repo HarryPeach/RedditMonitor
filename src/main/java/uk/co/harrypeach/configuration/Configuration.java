@@ -1,11 +1,14 @@
 package uk.co.harrypeach.configuration;
 
+import java.util.List;
+
 public class Configuration {
 	
 	private String oauthClient;
 	private boolean nsfwFilteringEnabled;
 	private boolean alertSoundEnabled;
 	private double alertSoundVolume;
+	private List<String> keywordList;
 	
 	public boolean isNsfwFilteringEnabled() {
 		return nsfwFilteringEnabled;
@@ -32,6 +35,12 @@ public class Configuration {
 	}
 	public void setOauthClient(String oauthClient) {
 		this.oauthClient = oauthClient;
+	}
+	public List<String> getKeywordList() {
+		return keywordList;
+	}
+	public void setKeywordList(List<String> keywordList) {
+		this.keywordList = keywordList;
 	}
 	
 }

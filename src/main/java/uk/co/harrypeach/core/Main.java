@@ -31,8 +31,6 @@ public class Main extends Application {
 			// Stop users from resizing the UI
 			primaryStage.setResizable(false);
 			
-			config = ConfigHelper.getInstance();
-			
 			LOGGER.log(Level.FINEST, "Showing primary stage");
 			primaryStage.show();
 		} catch (Exception e) {
@@ -41,6 +39,7 @@ public class Main extends Application {
 	}
 
 	public static void main(String[] args) {
+		config = ConfigHelper.getInstance();
 		// Set Logger defaults
 		// TODO: Change this so that it is set through VM args instead. See:
 		// https://stackoverflow.com/questions/6307648/change-global-setting-for-logger-instances/6307666#6307666

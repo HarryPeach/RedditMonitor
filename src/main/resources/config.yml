@@ -2,3 +2,15 @@ oauthClient: wB2mALpNvDm76g
 nsfwFilteringEnabled: true
 alertSoundEnabled: true
 alertSoundVolume: 0.4
+keywordList:
+    - giveaway
+    - steam key
+    - giving away
+    - cd key
+    - steam code
+    - cd code
+    - spare code
+    - spare key
+    - extra key
+    - extra code
+    - give away

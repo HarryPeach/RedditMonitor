@@ -248,8 +248,7 @@ class UpdateList implements Runnable {
 	Queue<Result> resultQueue = new LinkedList<>();
 
 	// The list of strings that are searched for within a posts title
-	List<String> stringList = Arrays.asList("steam key", "giving away", "giveaway", "cd key", "steam code", "cd code",
-			"spare code", "spare key", "extra key", "extra code", "give away");
+	List<String> stringList = Main.config.getConfigInstance().getKeywordList();
 
 	public UpdateList(FXMLCoreController instance) {
 		controllerInstance = instance;
