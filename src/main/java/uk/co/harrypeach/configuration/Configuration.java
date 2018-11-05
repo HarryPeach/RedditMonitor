@@ -2,7 +2,7 @@ package uk.co.harrypeach.configuration;
 
 public class Configuration {
 	
-	private String accountUsername;
+	private String oauthClient;
 	private boolean nsfwFilteringEnabled;
 	private boolean alertSoundEnabled;
 	private double alertSoundVolume;
@@ -27,12 +27,11 @@ public class Configuration {
 	public void setAlertSoundVolume(double alertSoundVolume) {
 		this.alertSoundVolume = alertSoundVolume;
 	}
-
-	public String getAccountUsername() {
-		return accountUsername;
+	public String getOauthClient() {
+		return oauthClient;
 	}
-	public void setAccountUsername(String accountUsername) {
-		this.accountUsername = accountUsername;
+	public void setOauthClient(String oauthClient) {
+		this.oauthClient = oauthClient;
 	}
 	
 }

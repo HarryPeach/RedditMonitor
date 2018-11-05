@@ -1,10 +1,13 @@
 package uk.co.harrypeach.misc;
+import java.util.UUID;
+
 import net.dean.jraw.RedditClient;
 import net.dean.jraw.http.NetworkAdapter;
 import net.dean.jraw.http.OkHttpNetworkAdapter;
 import net.dean.jraw.http.UserAgent;
 import net.dean.jraw.oauth.Credentials;
 import net.dean.jraw.oauth.OAuthHelper;
+import uk.co.harrypeach.core.Main;
 
 public class RedditHelper {
 
@@ -15,10 +18,7 @@ public class RedditHelper {
 	
 	public RedditHelper() {
 		userAgent = new UserAgent("bot", "application.redditmonitor", "0.1", "JellyGiant");
-		// MyCredentials is a class that contains static constants for sensitive data.
-		// It is hidden from the Git repository.
-		credentials = Credentials.script(MyCredentials.username, MyCredentials.password,
-				MyCredentials.clientId, MyCredentials.secret);
+		credentials = Credentials.userlessApp(Main.config.getConfigInstance().getOauthClient(), UUID.randomUUID());
 		adapter = new OkHttpNetworkAdapter(userAgent);
 		reddit = OAuthHelper.automatic(adapter, credentials);
 	}
