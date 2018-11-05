@@ -8,6 +8,7 @@ import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.image.Image;
 import javafx.stage.Stage;
 import uk.co.harrypeach.configuration.ConfigHelper;
 
@@ -22,6 +23,7 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Core.fxml"));
+			primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("icon.png")));
 			Scene scene = new Scene(root, 500, 300);
 			primaryStage.setTitle("RedditMonitor");
 			primaryStage.setScene(scene);
