@@ -19,6 +19,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
+import javafx.scene.input.MouseEvent;
 import javafx.scene.media.AudioClip;
 import net.dean.jraw.models.Listing;
 import net.dean.jraw.models.Submission;
@@ -112,6 +113,15 @@ public class FXMLCoreController {
 	}
 
 	/**
+	 * Debug function to add a dummy post to the list
+	 * @param event
+	 */
+	@FXML
+	protected void handleDebugAddItem(ActionEvent event) {
+		postList.getItems().add(new Result("/r/test", "This is a test post", "https://reddit.com/", "t35t"));
+	}
+	
+	/**
 	 * Called when the stage is initialised
 	 */
 	@FXML
@@ -146,6 +156,22 @@ public class FXMLCoreController {
 					}
 				});
 			}
+		});
+		
+		postList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+		    @Override
+		    public void handle(MouseEvent click) {
+
+		        if (click.getClickCount() == 2) {
+		        	try {
+						LOGGER.fine("Attempting to open selected URL in the users browser");
+						Desktop.getDesktop().browse(new URI(postList.getSelectionModel().getSelectedItem().getUrl()));
+					} catch (IOException | URISyntaxException e1) {
+						LOGGER.warning(e1.getMessage());
+						e1.printStackTrace();
+					}
+		        }
+		    }
 		});
 
 	}

@@ -2,7 +2,6 @@ package uk.co.harrypeach.ui;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
-import javafx.scene.layout.HBox;
 
 public class ConfigDialog extends Dialog<String>{
 	
