@@ -20,6 +20,7 @@ def getGitHash = { ->
 }
 
 version = "${getGitHash()}"
+applicationDefaultJvmArgs = [ "-Dgithash=${getGitHash()}" ]
 
 // In this section you declare where to find the dependencies of your project
 repositories {

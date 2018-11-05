@@ -84,7 +84,8 @@ public class FXMLCoreController {
 		Alert alert = new Alert(Alert.AlertType.INFORMATION);
 		alert.setTitle("About");
 		alert.setHeaderText("About Reddit Monitor");
-		alert.setContentText("Version " + Main.VERSION + " Copyright (C) Harry Peach\n"
+		alert.setContentText("Version " + Main.VERSION + " - build " + System.getProperty("githash") + "\n"
+				+ "Copyright (C) Harry Peach\n"
 				+ "Licensed under the GNU GPL v3\n"
 				+ "https://github.com/HarryPeach");
 		alert.showAndWait();
