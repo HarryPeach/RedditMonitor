@@ -34,6 +34,7 @@
 				<Menu text="Debug">
 					<items>
 						<MenuItem text="Add dummy post" onAction="#handleDebugAddItem" />
+						<MenuItem text="Clear post list" onAction="#handleDebugClearItems" />
 					</items>
 				</Menu>
 			</menus>

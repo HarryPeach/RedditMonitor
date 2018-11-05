@@ -1,7 +1,7 @@
 oauthClient: wB2mALpNvDm76g
 nsfwFilteringEnabled: true
 alertSoundEnabled: true
-alertSoundVolume: 0.4
+alertSoundVolume: 0.2
 keywordList:
     - giveaway
     - steam key

@@ -3,7 +3,6 @@ import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.Arrays;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
@@ -118,8 +117,19 @@ public class FXMLCoreController {
 	 */
 	@FXML
 	protected void handleDebugAddItem(ActionEvent event) {
+		LOGGER.fine("Adding dummy item to the post list");
 		postList.getItems().add(new Result("/r/test", "This is a test post", "https://reddit.com/", "t35t"));
 		playAlert();
+	}
+	
+	/**
+	 * Debug function to remove all items from the list
+	 * @param event
+	 */
+	@FXML
+	protected void handleDebugClearItems(ActionEvent event) {
+		LOGGER.fine("Clearing all items in the post list");
+		postList.getItems().clear();
 	}
 	
 	/**
