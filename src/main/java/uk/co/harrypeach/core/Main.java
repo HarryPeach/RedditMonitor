@@ -33,6 +33,7 @@ public class Main extends Application {
 			LOGGER.debug("Showing primary stage");
 			primaryStage.show();
 		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
 			e.printStackTrace();
 		}
 	}
