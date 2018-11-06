@@ -109,6 +109,7 @@ public class FXMLCoreController {
 	 */
 	@FXML
 	protected void handleConfigButton(ActionEvent event) {
+		LOGGER.debug("Showing config dialog");
 		ConfigDialog configDialog = new ConfigDialog("Configuration", "Configuration Manager");
 		configDialog.show();
 	}
@@ -193,6 +194,7 @@ public class FXMLCoreController {
 	 * Enables the thread and updates UI
 	 */
 	public void enableThread() {
+		LOGGER.trace("Enabling update thread");
 		if (t.getState().equals(Thread.State.NEW) || t.getState().equals(Thread.State.TERMINATED)) {
 			LOGGER.debug("Starting thread as it was either NEW or TERMINATED");
 			t.start();
@@ -205,6 +207,7 @@ public class FXMLCoreController {
 	 * Disables the thread and updates UI
 	 */
 	public void disableThread() {
+		LOGGER.trace("Disabling update thread");
 		startButton.setText("Start");
 		threadEnabled = false;
 	}
@@ -219,6 +222,7 @@ public class FXMLCoreController {
 		}
 
 		// Create a new audio clip from resources and play it to alert the user
+		LOGGER.debug("Playing alert clip");
 		alert = new AudioClip(getClass().getClassLoader().getResource("alert.wav").toExternalForm());
 		alert.setVolume(Main.config.getConfigInstance().getAlertSoundVolume());
 		alert.play();
@@ -268,6 +272,7 @@ class UpdateList implements Runnable {
 
 	public void run() {
 		if (controllerInstance.redditHelper == null) {
+			LOGGER.trace("Controller instance was null, so it was instantiated");
 			controllerInstance.redditHelper = new RedditHelper();
 		}
 		SubredditReference all = controllerInstance.redditHelper.getRedditClient().subreddit("all");
@@ -284,13 +289,17 @@ class UpdateList implements Runnable {
 						// Checks whether the submission title contains a keyword, and whether it is
 						// already in the result queue
 						if (titleContainsWordList(r.getTitle(), stringList) && !containsResult(resultQueue, r)) {
-							if(Main.config.getConfigInstance().isNsfwFilteringEnabled() && s.isNsfw())
+							LOGGER.info(String.format("Post matched - Title: {0}, Subreddit: {1}, URL: {2}", r.getTitle(), r.getSubreddit(), r.getUrl()));
+							if(Main.config.getConfigInstance().isNsfwFilteringEnabled() && s.isNsfw()) {
+								LOGGER.info("A post matched the criteria, but was blocked as it was marked NSFW");
 								return;
+							}
 
 							addToQueue(r);
 							Runnable updater = new Runnable() {
 								public void run() {
 									controllerInstance.playAlert();
+									LOGGER.trace("Adding item to postList");
 									controllerInstance.getPostList().getItems().add(r);
 								}
 							};
