@@ -39,6 +39,14 @@ dependencies {
     // Use JUnit test framework
     testImplementation 'junit:junit:4.12'
     
+    // JRAW
     compile "net.dean.jraw:JRAW:1.1.0"
+    
+    // SnakeYAML
     compile group: 'org.yaml', name: 'snakeyaml', version: '1.23'
+    
+    // slf4j
+    compile group: 'org.slf4j', name:'slf4j-api', version: '1.7.2'
+    compile group: 'ch.qos.logback', name:'logback-classic', version: '1.0.9'
+    compile group: 'ch.qos.logback', name:'logback-core', version: '1.0.9'
 }

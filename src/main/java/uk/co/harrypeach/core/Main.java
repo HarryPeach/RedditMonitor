@@ -1,8 +1,7 @@
 package uk.co.harrypeach.core;
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
@@ -16,7 +15,7 @@ public class Main extends Application {
 
 	public static ConfigHelper config;
 
-	private static final Logger LOGGER = Logger.getLogger(Main.class.getName());
+	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	public static final String VERSION = "0.2";
 
 	@Override
@@ -31,23 +30,16 @@ public class Main extends Application {
 			// Stop users from resizing the UI
 			primaryStage.setResizable(false);
 			
-			LOGGER.log(Level.FINEST, "Showing primary stage");
+			LOGGER.debug("Showing primary stage");
 			primaryStage.show();
 		} catch (Exception e) {
+			LOGGER.error(e.getMessage());
 			e.printStackTrace();
 		}
 	}
 
 	public static void main(String[] args) {
 		config = ConfigHelper.getInstance();
-		// Set Logger defaults
-		// TODO: Change this so that it is set through VM args instead. See:
-		// https://stackoverflow.com/questions/6307648/change-global-setting-for-logger-instances/6307666#6307666
-		Logger rootLogger = LogManager.getLogManager().getLogger("");
-		rootLogger.setLevel(Level.FINE);
-		for (Handler h : rootLogger.getHandlers()) {
-			h.setLevel(Level.FINE);
-		}
 
 		launch(args);
 	}
