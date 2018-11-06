@@ -289,7 +289,7 @@ class UpdateList implements Runnable {
 						// Checks whether the submission title contains a keyword, and whether it is
 						// already in the result queue
 						if (titleContainsWordList(r.getTitle(), stringList) && !containsResult(resultQueue, r)) {
-							LOGGER.info(String.format("Post matched - Title: {0}, Subreddit: {1}, URL: {2}", r.getTitle(), r.getSubreddit(), r.getUrl()));
+							LOGGER.info(String.format("Post matched - Title: %s, Subreddit: %s, URL: %s", r.getTitle(), r.getSubreddit(), r.getUrl()));
 							if(Main.config.getConfigInstance().isNsfwFilteringEnabled() && s.isNsfw()) {
 								LOGGER.info("A post matched the criteria, but was blocked as it was marked NSFW");
 								return;
