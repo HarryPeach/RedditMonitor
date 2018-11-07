@@ -297,8 +297,16 @@ class UpdateList implements Runnable {
 						// already in the result queue
 						if (titleContainsWordList(r.getTitle(), stringList) && !containsResult(resultQueue, r)) {
 							LOGGER.info(String.format("Post matched - Title: %s, Subreddit: %s, URL: %s", r.getTitle(), r.getSubreddit(), r.getUrl()));
+							
+							// NSFW Filtering
 							if(Main.config.getConfigInstance().isNsfwFilteringEnabled() && s.isNsfw()) {
 								LOGGER.info("A post matched the criteria, but was blocked as it was marked NSFW");
+								return;
+							}
+							
+							// Subreddit blacklist filtering
+							if(Main.config.getConfigInstance().getBlacklistedSubreddits().contains(s.getSubreddit().toLowerCase())) {
+								LOGGER.info("A post matched the criteria, but was blocked as its subreddit is blacklisted");
 								return;
 							}
 
