@@ -15,3 +15,7 @@ keywordList:
     - extra key
     - extra code
     - give away
+blacklistedSubreddits:
+	- wholesomegifs
+	- childrenfallingover
+	- fffffffuuuuuuuuuuuu

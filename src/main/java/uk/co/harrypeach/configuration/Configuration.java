@@ -10,6 +10,7 @@ public class Configuration {
 	private double alertSoundVolume;
 	private boolean notificationsEnabled;
 	private List<String> keywordList;
+	private List<String> blacklistedSubreddits;
 	
 	public boolean isNsfwFilteringEnabled() {
 		return nsfwFilteringEnabled;
@@ -48,6 +49,12 @@ public class Configuration {
 	}
 	public void setNotificationsEnabled(boolean notificationsEnabled) {
 		this.notificationsEnabled = notificationsEnabled;
+	}
+	public List<String> getBlacklistedSubreddits() {
+		return blacklistedSubreddits;
+	}
+	public void setBlacklistedSubreddits(List<String> blacklistedSubreddits) {
+		this.blacklistedSubreddits = blacklistedSubreddits;
 	}
 	
 }
