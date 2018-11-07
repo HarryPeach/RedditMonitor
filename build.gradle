@@ -46,11 +46,11 @@ dependencies {
     compile group: 'org.yaml', name: 'snakeyaml', version: '1.23'
     
     // slf4j
-    compile group: 'org.slf4j', name:'slf4j-api', version: '1.7.25'
+    compile group: 'org.slf4j', name:'slf4j-api', version: '1.7.2'
     compile group: 'ch.qos.logback', name:'logback-classic', version: '1.0.9'
     compile group: 'ch.qos.logback', name:'logback-core', version: '1.0.9'
     
-    // ControlsFX
-	compile group: 'org.controlsfx', name: 'controlsfx', version: '9.0.0'
+    // Controlsfx
+	compile group: 'org.controlsfx', name: 'controlsfx', version: '8.40.14'
     
 }
