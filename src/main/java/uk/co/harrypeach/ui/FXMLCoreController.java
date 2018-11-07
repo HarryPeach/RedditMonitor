@@ -20,7 +20,6 @@ import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.media.AudioClip;
-import javafx.util.Duration;
 import net.dean.jraw.models.Listing;
 import net.dean.jraw.models.Submission;
 import net.dean.jraw.models.SubredditSort;
@@ -29,8 +28,8 @@ import net.dean.jraw.references.SubredditReference;
 import uk.co.harrypeach.core.Main;
 import uk.co.harrypeach.misc.RedditHelper;
 import uk.co.harrypeach.misc.Result;
+import uk.co.harrypeach.ui.NotificationHelper.NotificationType;
 
-import org.controlsfx.control.Notifications;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,6 +53,7 @@ public class FXMLCoreController {
 
 	private static final int MAX_LABEL_CHARS = 60;
 	private static final Logger LOGGER = LoggerFactory.getLogger(FXMLCoreController.class);
+	NotificationHelper notifHelp = new NotificationHelper();
 
 	public boolean threadEnabled = false;
 	public RedditHelper redditHelper;
@@ -70,8 +70,12 @@ public class FXMLCoreController {
 	protected void handleStartButton(ActionEvent event) {
 		LOGGER.debug("Start/stop button clicked by user");
 		if (threadEnabled) {
+			if(Main.config.getConfigInstance().isNotificationsEnabled())
+				notifHelp.createNotification("Reddit Monitor", "User stopped update thread");
 			disableThread();
 		} else {
+			if(Main.config.getConfigInstance().isNotificationsEnabled())
+				notifHelp.createNotification("Reddit Monitor", "User started update thread");
 			enableThread();
 		}
 	}
@@ -263,6 +267,7 @@ class UpdateList implements Runnable {
 	private static final int MAX_RESULT_QUEUE_SIZE = 100;
 	private static final int SUBMISSION_LIMIT = 50;
 	private static final Logger LOGGER = LoggerFactory.getLogger(UpdateList.class);
+	private static final NotificationHelper notifHelp = new NotificationHelper();
 	Queue<Result> resultQueue = new LinkedList<>();
 
 	// The list of strings that are searched for within a posts title
@@ -303,6 +308,8 @@ class UpdateList implements Runnable {
 									controllerInstance.playAlert();
 									LOGGER.trace("Adding item to postList");
 									controllerInstance.getPostList().getItems().add(r);
+									if(Main.config.getConfigInstance().isNotificationsEnabled())
+										notifHelp.createNotification("Reddit Monitor", "A post was found that matches your criteria");
 								}
 							};
 							Platform.runLater(updater);
@@ -319,6 +326,8 @@ class UpdateList implements Runnable {
 					e.printStackTrace();
 					LOGGER.warn(e.getMessage());
 					controllerInstance.disableThread();
+					if(Main.config.getConfigInstance().isNotificationsEnabled())
+						notifHelp.createNotification("Reddit Monitor", "An error was encountered while running the program", NotificationHelper.DEFAULT_NOTIFICATION_DURATION, NotificationType.ERROR);
 				}
 			};
 			Platform.runLater(updater);

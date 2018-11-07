@@ -7,7 +7,7 @@ import javafx.util.Duration;
 
 public class NotificationHelper {
 	
-		private static int DEFAULT_NOTIFICATION_DURATION = 4000;
+		public static final int DEFAULT_NOTIFICATION_DURATION = 4000;
 		public static enum NotificationType { INFO, WARN, ERROR, CONFIRM, DEFAULT }
 	
 		/**
