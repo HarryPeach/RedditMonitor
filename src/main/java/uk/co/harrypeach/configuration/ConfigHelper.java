@@ -7,7 +7,6 @@ import org.slf4j.LoggerFactory;
 import org.yaml.snakeyaml.Yaml;
 
 import uk.co.harrypeach.core.Main;
-import uk.co.harrypeach.ui.FXMLCoreController;
 
 public class ConfigHelper {
 	
