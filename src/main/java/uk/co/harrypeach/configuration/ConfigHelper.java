@@ -1,5 +1,4 @@
 package uk.co.harrypeach.configuration;
-import java.io.IOException;
 import java.io.InputStream;
 
 import org.slf4j.Logger;
@@ -20,7 +19,7 @@ public class ConfigHelper {
 		try(InputStream in = Main.class.getClassLoader().getResource("config.yml").openStream()){
 			LOGGER.debug("Loading config resource into configuration class");
 			configInstance = yaml.loadAs(in, Configuration.class);
-		} catch (IOException e) {
+		} catch (Exception e) {
 			LOGGER.error(e.getMessage());
 			e.printStackTrace();
 		}
