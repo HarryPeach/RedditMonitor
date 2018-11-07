@@ -317,7 +317,7 @@ class UpdateList implements Runnable {
 									LOGGER.trace("Adding item to postList");
 									controllerInstance.getPostList().getItems().add(r);
 									if(Main.config.getConfigInstance().isNotificationsEnabled())
-										notifHelp.createNotification("Reddit Monitor", "A post was found that matches your criteria");
+										notifHelp.createNotification("Reddit Monitor - Match found", r.getTitle());
 								}
 							};
 							Platform.runLater(updater);
