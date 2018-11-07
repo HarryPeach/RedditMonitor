@@ -8,6 +8,7 @@ public class Configuration {
 	private boolean nsfwFilteringEnabled;
 	private boolean alertSoundEnabled;
 	private double alertSoundVolume;
+	private boolean notificationsEnabled;
 	private List<String> keywordList;
 	
 	public boolean isNsfwFilteringEnabled() {
@@ -41,6 +42,12 @@ public class Configuration {
 	}
 	public void setKeywordList(List<String> keywordList) {
 		this.keywordList = keywordList;
+	}
+	public boolean isNotificationsEnabled() {
+		return notificationsEnabled;
+	}
+	public void setNotificationsEnabled(boolean notificationsEnabled) {
+		this.notificationsEnabled = notificationsEnabled;
 	}
 	
 }
