@@ -8,6 +8,7 @@ public class Configuration {
 	private boolean nsfwFilteringEnabled;
 	private boolean alertSoundEnabled;
 	private double alertSoundVolume;
+	private int updateDelay;
 	private boolean notificationsEnabled;
 	private List<String> keywordList;
 	private List<String> blacklistedSubreddits;
@@ -55,6 +56,12 @@ public class Configuration {
 	}
 	public void setBlacklistedSubreddits(List<String> blacklistedSubreddits) {
 		this.blacklistedSubreddits = blacklistedSubreddits;
+	}
+	public int getUpdateDelay() {
+		return updateDelay;
+	}
+	public void setUpdateDelay(int updateDelay) {
+		this.updateDelay = updateDelay;
 	}
 	
 }

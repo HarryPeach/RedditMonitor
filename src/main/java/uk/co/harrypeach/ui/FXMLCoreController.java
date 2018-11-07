@@ -323,9 +323,9 @@ class UpdateList implements Runnable {
 							Platform.runLater(updater);
 						}
 					}
-					Thread.sleep(1000);
+					Thread.sleep(Main.config.getConfigInstance().getUpdateDelay());
 				} else {
-					Thread.sleep(1000);
+					Thread.sleep(Main.config.getConfigInstance().getUpdateDelay());
 				}
 			}
 		} catch (Exception e) {
