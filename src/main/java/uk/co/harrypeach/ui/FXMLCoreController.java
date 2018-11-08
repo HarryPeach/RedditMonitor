@@ -1,4 +1,5 @@
 package uk.co.harrypeach.ui;
+
 import java.awt.Desktop;
 import java.io.IOException;
 import java.net.URI;
@@ -6,6 +7,9 @@ import java.net.URISyntaxException;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Queue;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
@@ -19,7 +23,10 @@ import javafx.scene.control.Hyperlink;
 import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
+import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.AudioClip;
+import javafx.stage.FileChooser;
+import javafx.stage.FileChooser.ExtensionFilter;
 import net.dean.jraw.models.Listing;
 import net.dean.jraw.models.Submission;
 import net.dean.jraw.models.SubredditSort;
@@ -29,9 +36,6 @@ import uk.co.harrypeach.core.Main;
 import uk.co.harrypeach.misc.RedditHelper;
 import uk.co.harrypeach.misc.Result;
 import uk.co.harrypeach.ui.NotificationHelper.NotificationType;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
 /**
  * The controller for the primary stage
@@ -50,6 +54,8 @@ public class FXMLCoreController {
 	private Label subredditLabel;
 	@FXML
 	private Hyperlink urlLabel;
+	@FXML
+	private AnchorPane anchorPane;
 
 	private static final int MAX_LABEL_CHARS = 60;
 	private static final Logger LOGGER = LoggerFactory.getLogger(FXMLCoreController.class);
@@ -70,11 +76,11 @@ public class FXMLCoreController {
 	protected void handleStartButton(ActionEvent event) {
 		LOGGER.debug("Start/stop button clicked by user");
 		if (threadEnabled) {
-			if(Main.config.getConfigInstance().isNotificationsEnabled())
+			if (Main.config.getConfigInstance().isNotificationsEnabled())
 				notifHelp.createNotification("Reddit Monitor", "User stopped update thread");
 			disableThread();
 		} else {
-			if(Main.config.getConfigInstance().isNotificationsEnabled())
+			if (Main.config.getConfigInstance().isNotificationsEnabled())
 				notifHelp.createNotification("Reddit Monitor", "User started update thread");
 			enableThread();
 		}
@@ -92,14 +98,13 @@ public class FXMLCoreController {
 		alert.setTitle("About");
 		alert.setHeaderText("About Reddit Monitor");
 		alert.setContentText("Version " + Main.VERSION + " - build " + System.getProperty("githash") + "\n"
-				+ "Copyright (C) Harry Peach\n"
-				+ "Licensed under the GNU GPL v3\n"
-				+ "https://github.com/HarryPeach");
+				+ "Copyright (C) Harry Peach\n" + "Licensed under the GNU GPL v3\n" + "https://github.com/HarryPeach");
 		alert.showAndWait();
 	}
-	
+
 	/**
 	 * Exits the program entirely
+	 * 
 	 * @param event
 	 */
 	@FXML
@@ -108,9 +113,10 @@ public class FXMLCoreController {
 		disableThread();
 		System.exit(0);
 	}
-	
+
 	/**
 	 * Opens the config manager dialog
+	 * 
 	 * @param event
 	 */
 	@FXML
@@ -119,9 +125,10 @@ public class FXMLCoreController {
 		ConfigDialog configDialog = new ConfigDialog();
 		configDialog.show();
 	}
-	
+
 	/**
 	 * Opens the Logs dialog
+	 * 
 	 * @param event
 	 */
 	@FXML
@@ -131,8 +138,20 @@ public class FXMLCoreController {
 		logReaderDialog.show();
 	}
 
+	@FXML
+	protected void handleCsvExport(ActionEvent event) {
+		LOGGER.debug("Opening file dialog");
+
+		FileChooser fileChooser = new FileChooser();
+		FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("CSV Files", "*.csv");
+
+		fileChooser.getExtensionFilters().add(fileExtensions);
+		fileChooser.showOpenDialog(postList.getScene().getWindow());
+	}
+
 	/**
 	 * Debug function to add a dummy post to the list
+	 * 
 	 * @param event
 	 */
 	@FXML
@@ -141,9 +160,10 @@ public class FXMLCoreController {
 		postList.getItems().add(new Result("/r/test", "This is a test post", "https://reddit.com/", "t35t"));
 		playAlert();
 	}
-	
+
 	/**
 	 * Debug function to remove all items from the list
+	 * 
 	 * @param event
 	 */
 	@FXML
@@ -151,17 +171,19 @@ public class FXMLCoreController {
 		LOGGER.debug("Clearing all items in the post list");
 		postList.getItems().clear();
 	}
-	
+
 	/**
 	 * Debug function to create a dummy notification
+	 * 
 	 * @param event
 	 */
 	@FXML
 	protected void handleDebugCreateNotification(ActionEvent event) {
 		LOGGER.debug("Creating dummy notification");
-		notifHelp.createNotification("Reddit Monitor - DEBUG", "This is a dummy notification that deliberately has a very long notification content body.");
+		notifHelp.createNotification("Reddit Monitor - DEBUG",
+				"This is a dummy notification that deliberately has a very long notification content body.");
 	}
-	
+
 	/**
 	 * Called when the stage is initialised
 	 */
@@ -198,21 +220,21 @@ public class FXMLCoreController {
 				});
 			}
 		});
-		
-		postList.setOnMouseClicked(new EventHandler<MouseEvent>() {
-		    @Override
-		    public void handle(MouseEvent click) {
 
-		        if (click.getClickCount() == 2) {
-		        	try {
+		postList.setOnMouseClicked(new EventHandler<MouseEvent>() {
+			@Override
+			public void handle(MouseEvent click) {
+
+				if (click.getClickCount() == 2) {
+					try {
 						LOGGER.debug("Attempting to open selected URL in the users browser");
 						Desktop.getDesktop().browse(new URI(postList.getSelectionModel().getSelectedItem().getUrl()));
 					} catch (IOException | URISyntaxException e1) {
 						LOGGER.warn(e1.getMessage());
 						e1.printStackTrace();
 					}
-		        }
-		    }
+				}
+			}
 		});
 
 	}
@@ -317,17 +339,20 @@ class UpdateList implements Runnable {
 						// Checks whether the submission title contains a keyword, and whether it is
 						// already in the result queue
 						if (titleContainsWordList(r.getTitle(), stringList) && !containsResult(resultQueue, r)) {
-							LOGGER.info(String.format("Post matched - Title: %s, Subreddit: %s, URL: %s", r.getTitle(), r.getSubreddit(), r.getUrl()));
-							
+							LOGGER.info(String.format("Post matched - Title: %s, Subreddit: %s, URL: %s", r.getTitle(),
+									r.getSubreddit(), r.getUrl()));
+
 							// NSFW Filtering
-							if(Main.config.getConfigInstance().isNsfwFilteringEnabled() && s.isNsfw()) {
+							if (Main.config.getConfigInstance().isNsfwFilteringEnabled() && s.isNsfw()) {
 								LOGGER.info("A post matched the criteria, but was blocked as it was marked NSFW");
 								return;
 							}
-							
+
 							// Subreddit blacklist filtering
-							if(Main.config.getConfigInstance().getBlacklistedSubreddits().contains(s.getSubreddit().toLowerCase())) {
-								LOGGER.info("A post matched the criteria, but was blocked as its subreddit is blacklisted");
+							if (Main.config.getConfigInstance().getBlacklistedSubreddits()
+									.contains(s.getSubreddit().toLowerCase())) {
+								LOGGER.info(
+										"A post matched the criteria, but was blocked as its subreddit is blacklisted");
 								return;
 							}
 
@@ -337,7 +362,7 @@ class UpdateList implements Runnable {
 									controllerInstance.playAlert();
 									LOGGER.trace("Adding item to postList");
 									controllerInstance.getPostList().getItems().add(r);
-									if(Main.config.getConfigInstance().isNotificationsEnabled()) {
+									if (Main.config.getConfigInstance().isNotificationsEnabled()) {
 										notifHelp.createNotification("Reddit Monitor - Match found", r.getTitle());
 									}
 								}
@@ -356,8 +381,10 @@ class UpdateList implements Runnable {
 					e.printStackTrace();
 					LOGGER.warn(e.getMessage());
 					controllerInstance.disableThread();
-					if(Main.config.getConfigInstance().isNotificationsEnabled())
-						notifHelp.createNotification("Reddit Monitor", "An error was encountered while running the program", NotificationHelper.DEFAULT_NOTIFICATION_DURATION, NotificationType.ERROR);
+					if (Main.config.getConfigInstance().isNotificationsEnabled())
+						notifHelp.createNotification("Reddit Monitor",
+								"An error was encountered while running the program",
+								NotificationHelper.DEFAULT_NOTIFICATION_DURATION, NotificationType.ERROR);
 				}
 			};
 			Platform.runLater(updater);
