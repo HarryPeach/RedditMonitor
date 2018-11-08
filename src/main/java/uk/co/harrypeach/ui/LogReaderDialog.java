@@ -53,10 +53,12 @@ public class LogReaderDialog extends Dialog<String>{
 			} catch (FileNotFoundException e) {
 				LOGGER.error("FileNotFound Exception when accessing log file");
 				LOGGER.error(e.getMessage());
+				logList.getItems().add("Log could not be loaded");
 				e.printStackTrace();
 			} catch (IOException e) {
 				LOGGER.error("IO Exception when accessing log file");
 				LOGGER.error(e.getMessage());
+				logList.getItems().add("Log could not be loaded");
 				e.printStackTrace();
 			}
 		}else {
