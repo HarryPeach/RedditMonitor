@@ -116,8 +116,19 @@ public class FXMLCoreController {
 	@FXML
 	protected void handleConfigButton(ActionEvent event) {
 		LOGGER.debug("Showing config dialog");
-		ConfigDialog configDialog = new ConfigDialog("Configuration", "Configuration Manager");
+		ConfigDialog configDialog = new ConfigDialog();
 		configDialog.show();
+	}
+	
+	/**
+	 * Opens the Logs dialog
+	 * @param event
+	 */
+	@FXML
+	protected void handleLogsButton(ActionEvent event) {
+		LOGGER.debug("Showing logs dialog");
+		LogReaderDialog logReaderDialog = new LogReaderDialog();
+		logReaderDialog.show();
 	}
 
 	/**
