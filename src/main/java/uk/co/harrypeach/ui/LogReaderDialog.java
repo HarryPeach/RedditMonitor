@@ -68,7 +68,7 @@ public class LogReaderDialog extends Dialog<String>{
 		}
 		
 		ButtonType okButton = new ButtonType("Done", ButtonBar.ButtonData.OK_DONE);
-		getDialogPane().getButtonTypes().addAll(okButton, ButtonType.CANCEL);
+		getDialogPane().getButtonTypes().addAll(okButton);
 	}
 
 }

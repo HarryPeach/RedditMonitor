@@ -128,6 +128,7 @@ public class FXMLCoreController {
 	protected void handleLogsButton(ActionEvent event) {
 		LOGGER.debug("Showing logs dialog");
 		LogReaderDialog logReaderDialog = new LogReaderDialog();
+		logReaderDialog.setResizable(true);
 		logReaderDialog.show();
 	}
 
