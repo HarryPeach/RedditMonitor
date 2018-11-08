@@ -22,11 +22,12 @@
 				<Menu text="File">
 					<items>
 						<MenuItem text="Configuration" onAction="#handleConfigButton" />
+						<MenuItem text="Logs" onAction="#handleLogsButton" />
 						<SeparatorMenuItem />
 						<MenuItem text="Exit" onAction="#handleExitButton"/>
 					</items>
 				</Menu>
-				<Menu text="Help">
+				<Menu text="Info">
 					<items>
 						<MenuItem text="About" onAction="#handleAboutButton" />
 					</items>
