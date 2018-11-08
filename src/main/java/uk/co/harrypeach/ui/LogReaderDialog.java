@@ -28,6 +28,7 @@ public class LogReaderDialog extends Dialog<String>{
 	public LogReaderDialog() {
 		setTitle("Logs");
 		setHeaderText("Log viewer");
+		logList.setMinWidth(800);
 		
 		HBox hbox = new HBox();
 		HBox.setHgrow(logList, Priority.ALWAYS);
