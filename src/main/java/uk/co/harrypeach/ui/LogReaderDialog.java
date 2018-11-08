@@ -16,9 +16,11 @@ import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.Dialog;
 import javafx.scene.control.ListView;
+import javafx.scene.image.Image;
 import javafx.scene.layout.HBox;
 import javafx.scene.layout.Priority;
 import javafx.scene.layout.VBox;
+import javafx.stage.Stage;
 
 public class LogReaderDialog extends Dialog<String>{
 	
@@ -28,7 +30,11 @@ public class LogReaderDialog extends Dialog<String>{
 	public LogReaderDialog() {
 		setTitle("Logs");
 		setHeaderText("Log viewer");
+		setResizable(true);
 		logList.setMinWidth(800);
+		
+		Stage stage = (Stage) getDialogPane().getScene().getWindow();
+		stage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("icon.png")));
 		
 		HBox hbox = new HBox();
 		HBox.setHgrow(logList, Priority.ALWAYS);
