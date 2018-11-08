@@ -8,6 +8,7 @@ import javafx.util.Duration;
 public class NotificationHelper {
 	
 		public static final int DEFAULT_NOTIFICATION_DURATION = 4000;
+		public static final int MAX_NOTIFICATION_LENGTH = 64;
 		public static enum NotificationType { INFO, WARN, ERROR, CONFIRM, DEFAULT }
 	
 		/**
@@ -18,8 +19,16 @@ public class NotificationHelper {
 		 */
 		public void createNotification(String title, String text, int duration, NotificationType type) {
 			Notifications notification = Notifications.create();
+			
+			String contentAbbrev;
+			
+			if(text.length() > MAX_NOTIFICATION_LENGTH)
+				contentAbbrev = text.substring(0, Math.min(text.length(), MAX_NOTIFICATION_LENGTH)) + "...";
+			else
+				contentAbbrev = text;
+			
 			notification.title(title);
-			notification.text(text);
+			notification.text(contentAbbrev);
 			notification.hideAfter(new Duration(duration));
 			switch(type) {
 				case INFO:

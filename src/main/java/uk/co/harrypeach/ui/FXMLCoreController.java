@@ -153,6 +153,16 @@ public class FXMLCoreController {
 	}
 	
 	/**
+	 * Debug function to create a dummy notification
+	 * @param event
+	 */
+	@FXML
+	protected void handleDebugCreateNotification(ActionEvent event) {
+		LOGGER.debug("Creating dummy notification");
+		notifHelp.createNotification("Reddit Monitor - DEBUG", "This is a dummy notification that deliberately has a very long notification content body.");
+	}
+	
+	/**
 	 * Called when the stage is initialised
 	 */
 	@FXML
@@ -327,8 +337,9 @@ class UpdateList implements Runnable {
 									controllerInstance.playAlert();
 									LOGGER.trace("Adding item to postList");
 									controllerInstance.getPostList().getItems().add(r);
-									if(Main.config.getConfigInstance().isNotificationsEnabled())
+									if(Main.config.getConfigInstance().isNotificationsEnabled()) {
 										notifHelp.createNotification("Reddit Monitor - Match found", r.getTitle());
+									}
 								}
 							};
 							Platform.runLater(updater);
