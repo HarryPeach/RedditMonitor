@@ -1,7 +1,12 @@
 package uk.co.harrypeach.ui;
 
 import java.awt.Desktop;
+import java.io.BufferedWriter;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.LinkedList;
@@ -26,7 +31,6 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.AudioClip;
 import javafx.stage.FileChooser;
-import javafx.stage.FileChooser.ExtensionFilter;
 import net.dean.jraw.models.Listing;
 import net.dean.jraw.models.Submission;
 import net.dean.jraw.models.SubredditSort;
@@ -146,7 +150,28 @@ public class FXMLCoreController {
 		FileChooser.ExtensionFilter fileExtensions = new FileChooser.ExtensionFilter("CSV Files", "*.csv");
 
 		fileChooser.getExtensionFilters().add(fileExtensions);
-		fileChooser.showOpenDialog(postList.getScene().getWindow());
+		fileChooser.setTitle("Export to CSV");
+		File selectedFile = fileChooser.showSaveDialog(postList.getScene().getWindow());
+		if(selectedFile != null) {
+			FileOutputStream fos;
+			try {
+				fos = new FileOutputStream(selectedFile);
+				BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(fos));
+				bw.write("Title,Subreddit,Url");
+				bw.newLine();
+				for (Result p : postList.getItems()) {
+					bw.write(p.getTitle() + "," + p.getSubreddit() + "," + p.getUrl());
+					bw.newLine();
+				}
+				bw.close();
+			} catch (FileNotFoundException e) {
+				LOGGER.error("File not found when trying to export to CSV");
+				e.printStackTrace();
+			} catch (IOException e) {
+				LOGGER.error("IO Exception when trying to export to CSV");
+				e.printStackTrace();
+			}
+		}
 	}
 
 	/**
