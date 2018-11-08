@@ -27,6 +27,11 @@
 						<MenuItem text="Exit" onAction="#handleExitButton"/>
 					</items>
 				</Menu>
+				<Menu text="Edit">
+					<items>
+						<MenuItem text="Export to CSV" onAction="#handleCsvExport" />
+					</items>
+				</Menu>
 				<Menu text="Info">
 					<items>
 						<MenuItem text="About" onAction="#handleAboutButton" />
