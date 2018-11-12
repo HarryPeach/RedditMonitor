@@ -77,7 +77,7 @@
 				<!-- Separates the button and information sections to opposed corners -->
 				<Region HBox.hgrow="ALWAYS"></Region>
 
-				<Button fx:id="startButton" text="Start"></Button>
+				<Button fx:id="startButton" onAction="#handleStartButton" text="Start"></Button>
 
 			</HBox>
 

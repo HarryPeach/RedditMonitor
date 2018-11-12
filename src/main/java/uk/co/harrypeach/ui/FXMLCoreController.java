@@ -25,7 +25,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -224,10 +223,36 @@ public class FXMLCoreController {
 			@Override
 			public void changed(ObservableValue<? extends Result> observable, Result oldValue, Result newValue) {
 				String titleText = newValue.getTitle();
+				String titleUrl = newValue.getUrl();
 				titleLabel.setText(titleText.substring(0, Math.min(titleText.length(), MAX_LABEL_CHARS)));
+				titleLabel.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent e) {
+						try {
+							LOGGER.debug("Attempting to open selected URL in the users browser");
+							Desktop.getDesktop().browse(new URI(titleUrl));
+						} catch (IOException | URISyntaxException e1) {
+							LOGGER.warn(e1.getMessage());
+							e1.printStackTrace();
+						}
+					}
+				});
 
 				String subredditText = newValue.getSubreddit();
+				String subredditUrl = "https://reddit.com" + newValue.getSubreddit();
 				subredditLabel.setText(subredditText.substring(0, Math.min(subredditText.length(), MAX_LABEL_CHARS)));
+				subredditLabel.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent e) {
+						try {
+							LOGGER.debug("Attempting to open selected URL in the users browser");
+							Desktop.getDesktop().browse(new URI(subredditUrl));
+						} catch (IOException | URISyntaxException e1) {
+							LOGGER.warn(e1.getMessage());
+							e1.printStackTrace();
+						}
+					}
+				});
 
 				String urlText = newValue.getUrl();
 				urlLabel.setText(urlText.substring(0, Math.min(urlText.length(), MAX_LABEL_CHARS)));
