@@ -2,49 +2,90 @@
 
 <?import javafx.scene.media.*?>
 <?import java.lang.*?>
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
 
-<AnchorPane xmlns="http://javafx.com/javafx/8" xmlns:fx="http://javafx.com/fxml/1" fx:controller="uk.co.harrypeach.ui.FXMLCoreController">
-	<children>
-		<ListView fx:id="postList" layoutX="5.0" layoutY="88.0" prefHeight="220.0" prefWidth="500.0" />
-		<Button fx:id="startButton" layoutX="439.0" layoutY="44.0" mnemonicParsing="false" onAction="#handleStartButton" text="Start" />
-		<Label layoutX="20.0" layoutY="30.0" text="Title: " />
-		<Label layoutX="20.0" layoutY="47.0" text="Subreddit:" />
-		<Label layoutX="20.0" layoutY="65.0" text="URL:" />
-		<Label fx:id="titleLabel" layoutX="49.0" layoutY="30.0" text="" />
-		<Label fx:id="subredditLabel" layoutX="77.0" layoutY="47.0" text="" />
-		<Hyperlink fx:id="urlLabel" layoutX="44.0" layoutY="62.0" text="" />
-		<MediaView fitHeight="200.0" fitWidth="200.0" layoutX="-65.0" layoutY="-100.0" />
-			<MenuBar layoutX="0.0" layoutY="0.0" prefWidth="510.0">
+<BorderPane xmlns="http://javafx.com/javafx/8"
+	xmlns:fx="http://javafx.com/fxml/1">
+	<top>
+		<!-- Top menu bar -->
+		<MenuBar prefWidth="510.0">
 			<menus>
 				<Menu text="File">
 					<items>
-						<MenuItem text="Configuration" onAction="#handleConfigButton" />
-						<MenuItem text="Logs" onAction="#handleLogsButton" />
+						<Menu text="Export to...">
+							<items>
+								<MenuItem text="CSV" />
+							</items>
+						</Menu>
 						<SeparatorMenuItem />
-						<MenuItem text="Exit" onAction="#handleExitButton"/>
+						<MenuItem text="Exit" />
 					</items>
 				</Menu>
 				<Menu text="Edit">
 					<items>
-						<MenuItem text="Export to CSV" onAction="#handleCsvExport" />
+						<MenuItem text="Configuration" disable="true" />
 					</items>
 				</Menu>
-				<Menu text="Info">
+				<Menu text="View">
 					<items>
-						<MenuItem text="About" onAction="#handleAboutButton" />
+						<MenuItem text="Logs" />
+						<MenuItem text="About" />
 					</items>
 				</Menu>
 				<Menu text="Debug">
 					<items>
-						<MenuItem text="Add dummy post" onAction="#handleDebugAddItem" />
-						<MenuItem text="Clear post list" onAction="#handleDebugClearItems" />
-						<MenuItem text="Create debug notification" onAction="#handleDebugCreateNotification" />
+						<MenuItem text="Add dummy post" />
+						<MenuItem text="Clear post list" />
+						<MenuItem text="Create debug notification" />
 					</items>
 				</Menu>
 			</menus>
 		</MenuBar>
-	</children>
-</AnchorPane>
+	</top>
+	<center>
+
+		<VBox>
+			<padding>
+				<Insets top="10" right="10" left="10" bottom="10" />
+			</padding>
+			<HBox alignment="CENTER">
+				<padding>
+					<Insets top="0" right="0" left="0" bottom="10" />
+				</padding>
+
+				<!-- Information about the selected item -->
+				<GridPane>
+					<Label text="Title: " GridPane.columnIndex="0"
+						GridPane.rowIndex="0" style="-fx-font-weight: bold;" />
+					<Hyperlink text="sample title" GridPane.columnIndex="1"
+						GridPane.rowIndex="0" style="-fx-padding: 0 0 0 0;" />
+					<Label text="Subreddit: " GridPane.columnIndex="0"
+						GridPane.rowIndex="1" style="-fx-font-weight: bold;" />
+					<Hyperlink text="/r/samplesubreddit"
+						GridPane.columnIndex="1" GridPane.rowIndex="1"
+						style="-fx-padding: 0 0 0 0;" />
+					<Label text="URL: " GridPane.columnIndex="0"
+						GridPane.rowIndex="2" style="-fx-font-weight: bold;" />
+					<Hyperlink text="www.sample.url" GridPane.columnIndex="1"
+						GridPane.rowIndex="2" style="-fx-padding: 0 0 0 0;" />
+				</GridPane>
+
+				<!-- Separates the button and information sections to opposed corners -->
+				<Region HBox.hgrow="ALWAYS"></Region>
+
+				<Button text="Start"></Button>
+
+			</HBox>
+
+			<!-- List of selected items -->
+			<ListView VBox.vgrow="ALWAYS"></ListView>
+
+		</VBox>
+	</center>
+
+</BorderPane>
+	

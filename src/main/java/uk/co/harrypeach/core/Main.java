@@ -22,13 +22,10 @@ public class Main extends Application {
 	public void start(Stage primaryStage) {
 		try {
 			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Core.fxml"));
-			primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResourceAsStream("icon.png")));
+			primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResource("icon.png").toExternalForm()));
 			Scene scene = new Scene(root, 500, 300);
 			primaryStage.setTitle("RedditMonitor");
 			primaryStage.setScene(scene);
-
-			// Stop users from resizing the UI
-			primaryStage.setResizable(false);
 			
 			LOGGER.debug("Showing primary stage");
 			primaryStage.show();
