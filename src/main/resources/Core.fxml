@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.HBox?>
 
 <BorderPane xmlns="http://javafx.com/javafx/8"
-	xmlns:fx="http://javafx.com/fxml/1">
+	xmlns:fx="http://javafx.com/fxml/1" fx:controller="uk.co.harrypeach.ui.FXMLCoreController">
 	<top>
 		<!-- Top menu bar -->
 		<MenuBar prefWidth="510.0">
@@ -18,11 +18,11 @@
 					<items>
 						<Menu text="Export to...">
 							<items>
-								<MenuItem text="CSV" />
+								<MenuItem text="CSV" onAction="#handleCsvExport"/>
 							</items>
 						</Menu>
 						<SeparatorMenuItem />
-						<MenuItem text="Exit" />
+						<MenuItem text="Exit" onAction="#handleExitButton"/>
 					</items>
 				</Menu>
 				<Menu text="Edit">
@@ -32,15 +32,15 @@
 				</Menu>
 				<Menu text="View">
 					<items>
-						<MenuItem text="Logs" />
-						<MenuItem text="About" />
+						<MenuItem text="Logs" onAction="#handleLogsButton" />
+						<MenuItem text="About" onAction="#handleAboutButton" />
 					</items>
 				</Menu>
 				<Menu text="Debug">
 					<items>
-						<MenuItem text="Add dummy post" />
-						<MenuItem text="Clear post list" />
-						<MenuItem text="Create debug notification" />
+						<MenuItem text="Add dummy post" onAction="#handleDebugAddItem" />
+						<MenuItem text="Clear post list" onAction="#handleDebugClearItems" />
+						<MenuItem text="Create debug notification" onAction="#handleDebugCreateNotification" />
 					</items>
 				</Menu>
 			</menus>
@@ -61,28 +61,28 @@
 				<GridPane>
 					<Label text="Title: " GridPane.columnIndex="0"
 						GridPane.rowIndex="0" style="-fx-font-weight: bold;" />
-					<Hyperlink text="sample title" GridPane.columnIndex="1"
+					<Hyperlink fx:id="titleLabel" text="" GridPane.columnIndex="1"
 						GridPane.rowIndex="0" style="-fx-padding: 0 0 0 0;" />
 					<Label text="Subreddit: " GridPane.columnIndex="0"
 						GridPane.rowIndex="1" style="-fx-font-weight: bold;" />
-					<Hyperlink text="/r/samplesubreddit"
+					<Hyperlink fx:id="subredditLabel" text=""
 						GridPane.columnIndex="1" GridPane.rowIndex="1"
 						style="-fx-padding: 0 0 0 0;" />
 					<Label text="URL: " GridPane.columnIndex="0"
 						GridPane.rowIndex="2" style="-fx-font-weight: bold;" />
-					<Hyperlink text="www.sample.url" GridPane.columnIndex="1"
+					<Hyperlink fx:id="urlLabel" text="" GridPane.columnIndex="1"
 						GridPane.rowIndex="2" style="-fx-padding: 0 0 0 0;" />
 				</GridPane>
 
 				<!-- Separates the button and information sections to opposed corners -->
 				<Region HBox.hgrow="ALWAYS"></Region>
 
-				<Button text="Start"></Button>
+				<Button fx:id="startButton" text="Start"></Button>
 
 			</HBox>
 
 			<!-- List of selected items -->
-			<ListView VBox.vgrow="ALWAYS"></ListView>
+			<ListView fx:id="postList" VBox.vgrow="ALWAYS"></ListView>
 
 		</VBox>
 	</center>

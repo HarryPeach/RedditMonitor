@@ -53,9 +53,9 @@ public class FXMLCoreController {
 	@FXML
 	private Button startButton;
 	@FXML
-	private Label titleLabel;
+	private Hyperlink titleLabel;
 	@FXML
-	private Label subredditLabel;
+	private Hyperlink subredditLabel;
 	@FXML
 	private Hyperlink urlLabel;
 	@FXML
