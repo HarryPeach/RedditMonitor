@@ -143,6 +143,7 @@ public class FXMLCoreController {
 
 	/**
 	 * Exports the items within the list to a CSV file
+	 * 
 	 * @param event
 	 */
 	@FXML
@@ -155,7 +156,7 @@ public class FXMLCoreController {
 		fileChooser.getExtensionFilters().add(fileExtensions);
 		fileChooser.setTitle("Export to CSV");
 		File selectedFile = fileChooser.showSaveDialog(postList.getScene().getWindow());
-		if(selectedFile != null) {
+		if (selectedFile != null) {
 			FileOutputStream fos;
 			try {
 				fos = new FileOutputStream(selectedFile);
@@ -185,7 +186,8 @@ public class FXMLCoreController {
 	@FXML
 	protected void handleDebugAddItem(ActionEvent event) {
 		LOGGER.debug("Adding dummy item to the post list");
-		postList.getItems().add(new Result("/r/test", "This is a test post", "https://reddit.com/", "https://reddit.com/r/test/comments/t35t", "t35t"));
+		postList.getItems().add(new Result("/r/test", "This is a test post", "https://reddit.com/",
+				"https://reddit.com/r/test/comments/t35t", "t35t"));
 		playAlert();
 	}
 
@@ -226,7 +228,7 @@ public class FXMLCoreController {
 		postList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Result>() {
 			@Override
 			public void changed(ObservableValue<? extends Result> observable, Result oldValue, Result newValue) {
-				
+
 				// Set the title hyperlink text and URL
 				String titleText = newValue.getTitle();
 				String titleUrl = "https://reddit.com" + newValue.getPostUrl();
@@ -247,7 +249,8 @@ public class FXMLCoreController {
 				// Set the subreddit hyperlink text and URL
 				String subredditText = newValue.getSubreddit();
 				String subredditUrl = "https://reddit.com/r/" + newValue.getSubreddit();
-				subredditHyperlink.setText(subredditText.substring(0, Math.min(subredditText.length(), MAX_LABEL_CHARS)));
+				subredditHyperlink
+						.setText(subredditText.substring(0, Math.min(subredditText.length(), MAX_LABEL_CHARS)));
 				subredditHyperlink.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent e) {
@@ -365,7 +368,9 @@ public class FXMLCoreController {
 }
 
 /**
- * The updater thread which continiously checks for new posts that match the keywords and that are not blacklisted or already included
+ * The updater thread which continiously checks for new posts that match the
+ * keywords and that are not blacklisted or already included
+ * 
  * @author Harry Peach
  */
 class UpdateList implements Runnable {
@@ -417,6 +422,15 @@ class UpdateList implements Runnable {
 								LOGGER.info(
 										"A post matched the criteria, but was blocked as its subreddit is blacklisted");
 								return;
+							}
+
+							// Keyword blacklist filtering
+							for (String blacklistedKeyword : Main.config.getConfigInstance().getBlacklistedKeywords()) {
+								if (r.getTitle().contains(blacklistedKeyword)) {
+									LOGGER.info(
+											"A post matched the criteria, but was blocked as it contained a blacklisted keyword");
+									return;
+								}
 							}
 
 							// Add item to the postlist and notify the user

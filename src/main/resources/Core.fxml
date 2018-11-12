@@ -61,16 +61,16 @@
 				<GridPane>
 					<Label text="Title: " GridPane.columnIndex="0"
 						GridPane.rowIndex="0" style="-fx-font-weight: bold;" />
-					<Hyperlink fx:id="titleLabel" text="" GridPane.columnIndex="1"
+					<Hyperlink fx:id="titleHyperlink" text="" GridPane.columnIndex="1"
 						GridPane.rowIndex="0" style="-fx-padding: 0 0 0 0;" />
 					<Label text="Subreddit: " GridPane.columnIndex="0"
 						GridPane.rowIndex="1" style="-fx-font-weight: bold;" />
-					<Hyperlink fx:id="subredditLabel" text=""
+					<Hyperlink fx:id="subredditHyperlink" text=""
 						GridPane.columnIndex="1" GridPane.rowIndex="1"
 						style="-fx-padding: 0 0 0 0;" />
 					<Label text="URL: " GridPane.columnIndex="0"
 						GridPane.rowIndex="2" style="-fx-font-weight: bold;" />
-					<Hyperlink fx:id="urlLabel" text="" GridPane.columnIndex="1"
+					<Hyperlink fx:id="urlHyperlink" text="" GridPane.columnIndex="1"
 						GridPane.rowIndex="2" style="-fx-padding: 0 0 0 0;" />
 				</GridPane>
 

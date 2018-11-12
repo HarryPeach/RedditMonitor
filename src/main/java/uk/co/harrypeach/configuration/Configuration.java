@@ -12,6 +12,7 @@ public class Configuration {
 	private boolean notificationsEnabled;
 	private List<String> keywordList;
 	private List<String> blacklistedSubreddits;
+	private List<String> blacklistedKeywords;
 	
 	/**
 	 * Whether NSFW filtering is enabled or not
@@ -99,6 +100,17 @@ public class Configuration {
 	}
 	public void setUpdateDelay(int updateDelay) {
 		this.updateDelay = updateDelay;
+	}
+	
+	/**
+	 * Returns the list of blacklisted keywords
+	 * @return
+	 */
+	public List<String> getBlacklistedKeywords() {
+		return blacklistedKeywords;
+	}
+	public void setBlacklistedKeywords(List<String> blacklistedKeywords) {
+		this.blacklistedKeywords = blacklistedKeywords;
 	}
 	
 }

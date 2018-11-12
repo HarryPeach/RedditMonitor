@@ -20,3 +20,6 @@ blacklistedSubreddits:
     - wholesomegifs
     - childrenfallingover
     - fffffffuuuuuuuuuuuu
+blacklistedKeywords:
+    - fake
+    - us only
