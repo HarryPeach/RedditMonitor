@@ -409,6 +409,8 @@ class UpdateList implements Runnable {
 						if (titleContainsWordList(r.getTitle(), stringList) && !containsResult(resultQueue, r)) {
 							LOGGER.info(String.format("Post matched - Title: %s, Subreddit: %s, URL: %s", r.getTitle(),
 									r.getSubreddit(), r.getUrl()));
+							
+							addToQueue(r);
 
 							// NSFW Filtering
 							if (Main.config.getConfigInstance().isNsfwFilteringEnabled() && s.isNsfw()) {
@@ -434,7 +436,6 @@ class UpdateList implements Runnable {
 							}
 
 							// Add item to the postlist and notify the user
-							addToQueue(r);
 							Runnable updater = new Runnable() {
 								public void run() {
 									controllerInstance.playAlert();
