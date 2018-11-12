@@ -413,7 +413,7 @@ class UpdateList implements Runnable {
 							// NSFW Filtering
 							if (Main.config.getConfigInstance().isNsfwFilteringEnabled() && s.isNsfw()) {
 								LOGGER.info("A post matched the criteria, but was blocked as it was marked NSFW");
-								return;
+								continue;
 							}
 
 							// Subreddit blacklist filtering
@@ -421,7 +421,7 @@ class UpdateList implements Runnable {
 									.contains(s.getSubreddit().toLowerCase())) {
 								LOGGER.info(
 										"A post matched the criteria, but was blocked as its subreddit is blacklisted");
-								return;
+								continue;
 							}
 
 							// Keyword blacklist filtering
@@ -429,7 +429,7 @@ class UpdateList implements Runnable {
 								if (r.getTitle().contains(blacklistedKeyword)) {
 									LOGGER.info(
 											"A post matched the criteria, but was blocked as it contained a blacklisted keyword");
-									return;
+									continue;
 								}
 							}
 
