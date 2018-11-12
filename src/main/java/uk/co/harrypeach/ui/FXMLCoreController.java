@@ -25,7 +25,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
 import javafx.scene.control.Hyperlink;
-import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -53,11 +52,11 @@ public class FXMLCoreController {
 	@FXML
 	private Button startButton;
 	@FXML
-	private Label titleLabel;
+	private Hyperlink titleHyperlink;
 	@FXML
-	private Label subredditLabel;
+	private Hyperlink subredditHyperlink;
 	@FXML
-	private Hyperlink urlLabel;
+	private Hyperlink urlHyperlink;
 	@FXML
 	private AnchorPane anchorPane;
 
@@ -142,6 +141,10 @@ public class FXMLCoreController {
 		logReaderDialog.show();
 	}
 
+	/**
+	 * Exports the items within the list to a CSV file
+	 * @param event
+	 */
 	@FXML
 	protected void handleCsvExport(ActionEvent event) {
 		LOGGER.debug("Opening file dialog");
@@ -182,7 +185,7 @@ public class FXMLCoreController {
 	@FXML
 	protected void handleDebugAddItem(ActionEvent event) {
 		LOGGER.debug("Adding dummy item to the post list");
-		postList.getItems().add(new Result("/r/test", "This is a test post", "https://reddit.com/", "t35t"));
+		postList.getItems().add(new Result("/r/test", "This is a test post", "https://reddit.com/", "https://reddit.com/r/test/comments/t35t", "t35t"));
 		playAlert();
 	}
 
@@ -223,15 +226,45 @@ public class FXMLCoreController {
 		postList.getSelectionModel().selectedItemProperty().addListener(new ChangeListener<Result>() {
 			@Override
 			public void changed(ObservableValue<? extends Result> observable, Result oldValue, Result newValue) {
+				
+				// Set the title hyperlink text and URL
 				String titleText = newValue.getTitle();
-				titleLabel.setText(titleText.substring(0, Math.min(titleText.length(), MAX_LABEL_CHARS)));
+				String titleUrl = "https://reddit.com" + newValue.getPostUrl();
+				titleHyperlink.setText(titleText.substring(0, Math.min(titleText.length(), MAX_LABEL_CHARS)));
+				titleHyperlink.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent e) {
+						try {
+							LOGGER.debug("Attempting to open selected URL in the users browser");
+							Desktop.getDesktop().browse(new URI(titleUrl));
+						} catch (IOException | URISyntaxException e1) {
+							LOGGER.warn(e1.getMessage());
+							e1.printStackTrace();
+						}
+					}
+				});
 
+				// Set the subreddit hyperlink text and URL
 				String subredditText = newValue.getSubreddit();
-				subredditLabel.setText(subredditText.substring(0, Math.min(subredditText.length(), MAX_LABEL_CHARS)));
+				String subredditUrl = "https://reddit.com/r/" + newValue.getSubreddit();
+				subredditHyperlink.setText(subredditText.substring(0, Math.min(subredditText.length(), MAX_LABEL_CHARS)));
+				subredditHyperlink.setOnAction(new EventHandler<ActionEvent>() {
+					@Override
+					public void handle(ActionEvent e) {
+						try {
+							LOGGER.debug("Attempting to open selected URL in the users browser");
+							Desktop.getDesktop().browse(new URI(subredditUrl));
+						} catch (IOException | URISyntaxException e1) {
+							LOGGER.warn(e1.getMessage());
+							e1.printStackTrace();
+						}
+					}
+				});
 
+				// Set the URL hyperlink text and URL
 				String urlText = newValue.getUrl();
-				urlLabel.setText(urlText.substring(0, Math.min(urlText.length(), MAX_LABEL_CHARS)));
-				urlLabel.setOnAction(new EventHandler<ActionEvent>() {
+				urlHyperlink.setText(urlText.substring(0, Math.min(urlText.length(), MAX_LABEL_CHARS)));
+				urlHyperlink.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent e) {
 						try {
@@ -246,6 +279,7 @@ public class FXMLCoreController {
 			}
 		});
 
+		// Open the post's url in the browser when it is double clicked.
 		postList.setOnMouseClicked(new EventHandler<MouseEvent>() {
 			@Override
 			public void handle(MouseEvent click) {
@@ -330,6 +364,10 @@ public class FXMLCoreController {
 
 }
 
+/**
+ * The updater thread which continiously checks for new posts that match the keywords and that are not blacklisted or already included
+ * @author Harry Peach
+ */
 class UpdateList implements Runnable {
 	private FXMLCoreController controllerInstance;
 	private static final int MAX_RESULT_QUEUE_SIZE = 100;
@@ -360,7 +398,7 @@ class UpdateList implements Runnable {
 					Listing<Submission> submissions = paginator.next();
 
 					for (Submission s : submissions) {
-						Result r = new Result(s.getSubreddit(), s.getTitle(), s.getUrl(), s.getId());
+						Result r = new Result(s.getSubreddit(), s.getTitle(), s.getUrl(), s.getPermalink(), s.getId());
 						// Checks whether the submission title contains a keyword, and whether it is
 						// already in the result queue
 						if (titleContainsWordList(r.getTitle(), stringList) && !containsResult(resultQueue, r)) {
@@ -381,6 +419,7 @@ class UpdateList implements Runnable {
 								return;
 							}
 
+							// Add item to the postlist and notify the user
 							addToQueue(r);
 							Runnable updater = new Runnable() {
 								public void run() {
