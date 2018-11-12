@@ -181,7 +181,7 @@ public class FXMLCoreController {
 	@FXML
 	protected void handleDebugAddItem(ActionEvent event) {
 		LOGGER.debug("Adding dummy item to the post list");
-		postList.getItems().add(new Result("/r/test", "This is a test post", "https://reddit.com/", "t35t"));
+		postList.getItems().add(new Result("/r/test", "This is a test post", "https://reddit.com/", "https://reddit.com/r/test/comments/t35t", "t35t"));
 		playAlert();
 	}
 
@@ -223,7 +223,7 @@ public class FXMLCoreController {
 			@Override
 			public void changed(ObservableValue<? extends Result> observable, Result oldValue, Result newValue) {
 				String titleText = newValue.getTitle();
-				String titleUrl = newValue.getUrl();
+				String titleUrl = "https://reddit.com" + newValue.getPostUrl();
 				titleLabel.setText(titleText.substring(0, Math.min(titleText.length(), MAX_LABEL_CHARS)));
 				titleLabel.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
@@ -239,7 +239,7 @@ public class FXMLCoreController {
 				});
 
 				String subredditText = newValue.getSubreddit();
-				String subredditUrl = "https://reddit.com" + newValue.getSubreddit();
+				String subredditUrl = "https://reddit.com/r/" + newValue.getSubreddit();
 				subredditLabel.setText(subredditText.substring(0, Math.min(subredditText.length(), MAX_LABEL_CHARS)));
 				subredditLabel.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
@@ -385,7 +385,7 @@ class UpdateList implements Runnable {
 					Listing<Submission> submissions = paginator.next();
 
 					for (Submission s : submissions) {
-						Result r = new Result(s.getSubreddit(), s.getTitle(), s.getUrl(), s.getId());
+						Result r = new Result(s.getSubreddit(), s.getTitle(), s.getUrl(), s.getPermalink(), s.getId());
 						// Checks whether the submission title contains a keyword, and whether it is
 						// already in the result queue
 						if (titleContainsWordList(r.getTitle(), stringList) && !containsResult(resultQueue, r)) {

@@ -9,12 +9,14 @@ public class Result {
 	private String subreddit;
 	private String title;
 	private String url;
+	private String postUrl;
 	private String id;
 	
-	public Result(String subreddit, String title, String url, String id) {
+	public Result(String subreddit, String title, String url, String postUrl, String id) {
 		this.subreddit = subreddit;
 		this.title = title;
 		this.url = url;
+		this.postUrl = postUrl;
 		this.id = id;
 	}
 	
@@ -42,11 +44,19 @@ public class Result {
 	}
 
 	/**
-	 * Gets the URL of the post
+	 * Gets the URL of the post's content
 	 * @return URL string
 	 */
 	public String getUrl() {
 		return url;
+	}
+	
+	/**
+	 * Gets the URL of the post itself
+	 * @return URL string
+	 */
+	public String getPostUrl() {
+		return postUrl;
 	}
 	
 	/**
