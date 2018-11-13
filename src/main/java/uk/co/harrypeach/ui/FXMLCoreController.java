@@ -361,6 +361,17 @@ public class FXMLCoreController {
 		startButton.setText("Stop");
 		threadEnabled = true;
 	}
+	
+	/**
+	 * Restarts / recreates the update thread
+	 */
+	public void restartThread() {
+		LOGGER.debug("Restarting the update thread");
+		disableThread();
+		t = new Thread(new UpdateList(this));
+		t.setDaemon(true);
+		enableThread();
+	}
 
 	/**
 	 * Disables the thread and updates UI
@@ -449,7 +460,7 @@ class UpdateList implements Runnable {
 					DefaultPaginator<Submission> paginator = all.posts().sorting(SubredditSort.NEW)
 							.limit(SUBMISSION_LIMIT).build();
 					Listing<Submission> submissions = paginator.next();
-
+					
 					for (Submission s : submissions) {
 						Result r = new Result(s.getSubreddit(), s.getTitle(), s.getUrl(), s.getPermalink(), s.getId());
 						// Checks whether the submission title contains a keyword, and whether it is
@@ -506,8 +517,8 @@ class UpdateList implements Runnable {
 			Runnable updater = new Runnable() {
 				public void run() {
 					e.printStackTrace();
-					LOGGER.warn(e.getMessage());
-					controllerInstance.disableThread();
+					LOGGER.error(e.getMessage());
+					controllerInstance.restartThread();
 					if (Main.config.getConfigInstance().isNotificationsEnabled())
 						notifHelp.createNotification("Reddit Monitor",
 								"An error was encountered while running the program",
