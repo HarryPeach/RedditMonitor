@@ -24,7 +24,7 @@ public class Main extends Application {
 			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("core.fxml"));
 			primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResource("icon.png").toExternalForm()));
 			Scene scene = new Scene(root, 500, 300);
-			primaryStage.setTitle("RedditMonitor");
+			primaryStage.setTitle("Reddit Monitor " + VERSION);
 			primaryStage.setScene(scene);
 			
 			LOGGER.debug("Showing primary stage");
