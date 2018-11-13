@@ -21,7 +21,7 @@ public class Main extends Application {
 	@Override
 	public void start(Stage primaryStage) {
 		try {
-			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("Core.fxml"));
+			Parent root = FXMLLoader.load(getClass().getClassLoader().getResource("core.fxml"));
 			primaryStage.getIcons().add(new Image(getClass().getClassLoader().getResource("icon.png").toExternalForm()));
 			Scene scene = new Scene(root, 500, 300);
 			primaryStage.setTitle("RedditMonitor");
