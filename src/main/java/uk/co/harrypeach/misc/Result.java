@@ -34,6 +34,14 @@ public class Result {
 	public String getSubreddit() {
 		return subreddit;
 	}
+	
+	/**
+	 * Gets the subreddit name including reddit.com prefix
+	 * @return
+	 */
+	public String getFullSubreddit() {
+		return "https://reddit.com/r/" + subreddit;
+	}
 
 	/**
 	 * Gets the title of the post
@@ -57,6 +65,14 @@ public class Result {
 	 */
 	public String getPostUrl() {
 		return postUrl;
+	}
+	
+	/**
+	 * Returns the URL of the post itself including reddit.com prefix
+	 * @return
+	 */
+	public String getFullPostUrl() {
+		return "https://reddit.com" + postUrl;
 	}
 	
 	/**

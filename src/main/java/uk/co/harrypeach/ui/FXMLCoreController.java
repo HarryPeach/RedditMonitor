@@ -17,6 +17,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javafx.application.Platform;
+import javafx.beans.binding.Bindings;
+import javafx.beans.binding.StringBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -24,8 +26,11 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Button;
+import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Hyperlink;
+import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.media.AudioClip;
@@ -186,8 +191,8 @@ public class FXMLCoreController {
 	@FXML
 	protected void handleDebugAddItem(ActionEvent event) {
 		LOGGER.debug("Adding dummy item to the post list");
-		postList.getItems().add(new Result("/r/test", "This is a test post", "https://reddit.com/",
-				"https://reddit.com/r/test/comments/t35t", "t35t"));
+		postList.getItems().add(new Result("test", "This is a test post", "https://reddit.com/",
+				"/r/test/comments/t35t", "t35t"));
 		playAlert();
 	}
 
@@ -231,36 +236,24 @@ public class FXMLCoreController {
 
 				// Set the title hyperlink text and URL
 				String titleText = newValue.getTitle();
-				String titleUrl = "https://reddit.com" + newValue.getPostUrl();
+				String titleUrl =  newValue.getFullPostUrl();
 				titleHyperlink.setText(titleText.substring(0, Math.min(titleText.length(), MAX_LABEL_CHARS)));
 				titleHyperlink.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent e) {
-						try {
-							LOGGER.debug("Attempting to open selected URL in the users browser");
-							Desktop.getDesktop().browse(new URI(titleUrl));
-						} catch (IOException | URISyntaxException e1) {
-							LOGGER.warn(e1.getMessage());
-							e1.printStackTrace();
-						}
+						openUrlInBrowser(titleUrl);
 					}
 				});
 
 				// Set the subreddit hyperlink text and URL
 				String subredditText = newValue.getSubreddit();
-				String subredditUrl = "https://reddit.com/r/" + newValue.getSubreddit();
+				String subredditUrl = newValue.getFullSubreddit();
 				subredditHyperlink
 						.setText(subredditText.substring(0, Math.min(subredditText.length(), MAX_LABEL_CHARS)));
 				subredditHyperlink.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent e) {
-						try {
-							LOGGER.debug("Attempting to open selected URL in the users browser");
-							Desktop.getDesktop().browse(new URI(subredditUrl));
-						} catch (IOException | URISyntaxException e1) {
-							LOGGER.warn(e1.getMessage());
-							e1.printStackTrace();
-						}
+						openUrlInBrowser(subredditUrl);
 					}
 				});
 
@@ -270,13 +263,7 @@ public class FXMLCoreController {
 				urlHyperlink.setOnAction(new EventHandler<ActionEvent>() {
 					@Override
 					public void handle(ActionEvent e) {
-						try {
-							LOGGER.debug("Attempting to open selected URL in the users browser");
-							Desktop.getDesktop().browse(new URI(urlText));
-						} catch (IOException | URISyntaxException e1) {
-							LOGGER.warn(e1.getMessage());
-							e1.printStackTrace();
-						}
+						openUrlInBrowser(urlText);
 					}
 				});
 			}
@@ -288,17 +275,78 @@ public class FXMLCoreController {
 			public void handle(MouseEvent click) {
 
 				if (click.getClickCount() == 2) {
-					try {
-						LOGGER.debug("Attempting to open selected URL in the users browser");
-						Desktop.getDesktop().browse(new URI(postList.getSelectionModel().getSelectedItem().getUrl()));
-					} catch (IOException | URISyntaxException e1) {
-						LOGGER.warn(e1.getMessage());
-						e1.printStackTrace();
-					}
+					openUrlInBrowser(postList.getSelectionModel().getSelectedItem().getUrl());
 				}
 			}
 		});
 
+		// Open a context menu upon right-clicking items in the list
+		postList.setCellFactory(lv -> {
+			ListCell<Result> cell = new ListCell<>();
+			ContextMenu contextMenu = new ContextMenu();
+
+			StringBinding stringBinding = new StringBinding() {
+				{
+					super.bind(cell.itemProperty().asString());
+				}
+
+				@Override
+				protected String computeValue() {
+					if (cell.itemProperty().getValue() == null) {
+						return "";
+					}
+					return cell.itemProperty().getValue().getTitle();
+				}
+			};
+			cell.textProperty().bind(stringBinding);
+
+			MenuItem openPermalink = new MenuItem();
+			openPermalink.textProperty().bind(Bindings.format("Open Permalink"));
+			openPermalink.setOnAction(event -> {
+				openUrlInBrowser(cell.getItem().getFullPostUrl());
+			});
+
+			MenuItem openSubreddit = new MenuItem();
+			openSubreddit.textProperty().bind(Bindings.format("Open Subreddit"));
+			openSubreddit.setOnAction(event -> {
+				openUrlInBrowser(cell.getItem().getFullSubreddit());
+			});
+
+			MenuItem openURL = new MenuItem();
+			openURL.textProperty().bind(Bindings.format("Open URL"));
+			openURL.setOnAction(event -> {
+				openUrlInBrowser(cell.getItem().getUrl());
+			});
+
+			MenuItem deleteItem = new MenuItem();
+			deleteItem.textProperty().bind(Bindings.format("Delete item"));
+			deleteItem.setOnAction(event -> postList.getItems().remove(cell.getItem()));
+			contextMenu.getItems().addAll(openPermalink, openSubreddit, openURL, deleteItem);
+
+			cell.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
+				if (isNowEmpty) {
+					cell.setContextMenu(null);
+				} else {
+					cell.setContextMenu(contextMenu);
+				}
+			});
+
+			return cell;
+		});
+
+	}
+	
+	/**
+	 * Opens a specific URL in the users browser
+	 */
+	private void openUrlInBrowser(String url) {
+		try {
+			LOGGER.debug("Attempting to open selected URL in the users browser");
+			Desktop.getDesktop().browse(new URI(url));
+		} catch (IOException | URISyntaxException e1) {
+			LOGGER.warn(e1.getMessage());
+			e1.printStackTrace();
+		}
 	}
 
 	/**
@@ -409,7 +457,7 @@ class UpdateList implements Runnable {
 						if (titleContainsWordList(r.getTitle(), stringList) && !containsResult(resultQueue, r)) {
 							LOGGER.info(String.format("Post matched - Title: %s, Subreddit: %s, URL: %s", r.getTitle(),
 									r.getSubreddit(), r.getUrl()));
-							
+
 							addToQueue(r);
 
 							// NSFW Filtering
