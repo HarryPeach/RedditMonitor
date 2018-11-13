@@ -17,6 +17,7 @@ public class Main extends Application {
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
 	public static final String VERSION = "0.4";
+	private static Stage primaryStageInstance;
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -26,6 +27,8 @@ public class Main extends Application {
 			Scene scene = new Scene(root, 500, 300);
 			primaryStage.setTitle("Reddit Monitor " + VERSION);
 			primaryStage.setScene(scene);
+
+			primaryStageInstance = primaryStage;
 			
 			LOGGER.debug("Showing primary stage");
 			primaryStage.show();
@@ -39,5 +42,22 @@ public class Main extends Application {
 		config = ConfigHelper.getInstance();
 
 		launch(args);
+	}
+	
+	/**
+	 * Returns the current primary stage
+	 * @return The current primary stage
+	 */
+	public static Stage getPrimaryStage() {
+		return primaryStageInstance;
+	}
+	
+	/**
+	 * Brings the primary stage to the front of the users screen and focuses it
+	 */
+	public static void popupPrimaryStage() {
+		getPrimaryStage().setAlwaysOnTop(true);
+		getPrimaryStage().requestFocus();
+		getPrimaryStage().setAlwaysOnTop(false);
 	}
 }

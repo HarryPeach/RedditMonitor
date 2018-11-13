@@ -4,6 +4,7 @@ import org.controlsfx.control.Notifications;
 
 import javafx.application.Platform;
 import javafx.util.Duration;
+import uk.co.harrypeach.core.Main;
 
 public class NotificationHelper {
 	
@@ -30,6 +31,7 @@ public class NotificationHelper {
 			notification.title(title);
 			notification.text(contentAbbrev);
 			notification.hideAfter(new Duration(duration));
+			notification.onAction(a -> Main.popupPrimaryStage());
 			switch(type) {
 				case INFO:
 					Platform.runLater(() -> notification.showInformation());
