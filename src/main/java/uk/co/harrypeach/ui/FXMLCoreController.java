@@ -1,6 +1,9 @@
 package uk.co.harrypeach.ui;
 
 import java.awt.Desktop;
+import java.awt.Toolkit;
+import java.awt.datatransfer.Clipboard;
+import java.awt.datatransfer.StringSelection;
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileNotFoundException;
@@ -13,7 +16,6 @@ import java.net.URISyntaxException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import javafx.beans.binding.Bindings;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -25,6 +27,7 @@ import javafx.scene.control.ContextMenu;
 import javafx.scene.control.Hyperlink;
 import javafx.scene.control.ListCell;
 import javafx.scene.control.ListView;
+import javafx.scene.control.Menu;
 import javafx.scene.control.MenuItem;
 import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.AnchorPane;
@@ -284,29 +287,57 @@ public class FXMLCoreController {
 	            }
 			};
 			ContextMenu contextMenu = new ContextMenu();
-
+			
+			// Open... menu and contained items
+			Menu openMenu = new Menu("Open...");
+			
 			MenuItem openPermalinkItem = new MenuItem();
-			openPermalinkItem.setText("Open Permalink");
+			openPermalinkItem.setText("Permalink");
 			openPermalinkItem.setOnAction(event -> {
 				openUrlInBrowser(cell.getItem().getFullPostUrl());
 			});
-
+			
 			MenuItem openSubredditItem = new MenuItem();
-			openSubredditItem.setText("Open Subreddit");
+			openSubredditItem.setText("Subreddit");
 			openSubredditItem.setOnAction(event -> {
 				openUrlInBrowser(cell.getItem().getFullSubreddit());
 			});
-
+			
 			MenuItem openUrlItem = new MenuItem();
-			openUrlItem.setText("Open URL");
+			openUrlItem.setText("URL");
 			openUrlItem.setOnAction(event -> {
 				openUrlInBrowser(cell.getItem().getUrl());
 			});
+			
+			openMenu.getItems().addAll(openPermalinkItem, openSubredditItem, openUrlItem);
 
+			// Copy... menu and contained items
+			Menu copyMenu = new Menu("Copy...");
+			
+			MenuItem copyPermalinkItem = new MenuItem();
+			copyPermalinkItem.setText("Permalink");
+			copyPermalinkItem.setOnAction(event -> {
+				copyStringToClipboard(cell.getItem().getFullPostUrl());
+			});
+			
+			MenuItem copySubredditItem = new MenuItem();
+			copySubredditItem.setText("Subreddit");
+			copySubredditItem.setOnAction(event -> {
+				copyStringToClipboard(cell.getItem().getFullSubreddit());
+			});
+			
+			MenuItem copyUrlItem = new MenuItem();
+			copyUrlItem.setText("URL");
+			copyUrlItem.setOnAction(event -> {
+				copyStringToClipboard(cell.getItem().getUrl());
+			});
+			
+			copyMenu.getItems().addAll(copyPermalinkItem, copySubredditItem, copyUrlItem);
+			
 			MenuItem deleteItem = new MenuItem();
 			deleteItem.setText("Delete item");
 			deleteItem.setOnAction(event -> postList.getItems().remove(cell.getItem()));
-			contextMenu.getItems().addAll(openPermalinkItem, openSubredditItem, openUrlItem, deleteItem);
+			contextMenu.getItems().addAll(openMenu, copyMenu, deleteItem);
 
 			cell.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
 				if (isNowEmpty) {
@@ -326,11 +357,22 @@ public class FXMLCoreController {
 	 */
 	private void openUrlInBrowser(String url) {
 		try {
-			LOGGER.debug("Attempting to open selected URL in the users browser");
+			LOGGER.debug("Attempting to open URL: " + url);
 			Desktop.getDesktop().browse(new URI(url));
 		} catch (IOException | URISyntaxException e1) {
 			LOGGER.warn("Exception opening URL in browser: " + e1);
 		}
+	}
+	
+	/**
+	 * Copies a specific string to the users clipboard
+	 * @param copyString The string to be copied to the clipboard
+	 */
+	private void copyStringToClipboard(String copyString) {
+		StringSelection stringSelection = new StringSelection(copyString);
+		Clipboard clipboard = Toolkit.getDefaultToolkit().getSystemClipboard();
+		LOGGER.debug("Copying string to clipboard: " + copyString);
+		clipboard.setContents(stringSelection, null);
 	}
 
 	/**

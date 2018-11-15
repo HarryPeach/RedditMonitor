@@ -16,7 +16,7 @@ public class Main extends Application {
 	public static ConfigHelper config;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(Main.class);
-	public static final String VERSION = "0.5 pre";
+	public static final String VERSION = "0.5";
 	private static Stage primaryStageInstance;
 
 	@Override
