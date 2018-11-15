@@ -159,7 +159,9 @@ public class FXMLCoreController {
 				bw.write("Title,Subreddit,Url");
 				bw.newLine();
 				for (Result p : postList.getItems()) {
-					bw.write(p.getTitle() + "," + p.getSubreddit() + "," + p.getUrl());
+					// Strip commas to format well with CSV
+					String titleStripped = p.getTitle().replace(",", "");
+					bw.write(titleStripped + "," + p.getSubreddit() + "," + p.getUrl());
 					bw.newLine();
 				}
 				bw.close();
