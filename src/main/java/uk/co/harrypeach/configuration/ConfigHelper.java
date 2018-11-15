@@ -25,9 +25,12 @@ public class ConfigHelper {
 		LOGGER.debug("Checking for production configuration file");
 		if(PRODUCTION_CONFIG_LOCATION.exists() && !PRODUCTION_CONFIG_LOCATION.isDirectory()) {
 			configToUse = PRODUCTION_CONFIG_LOCATION.getPath();
-		}else {
+		}else if(DEBUG_CONFIG_LOCATION.exists() && !DEBUG_CONFIG_LOCATION.isDirectory()){
 			LOGGER.debug("Production configuration not found, falling back to debug configuration location");
 			configToUse = DEBUG_CONFIG_LOCATION.getPath();
+		}else {
+			LOGGER.error("Neither debug nor production configuration were found");
+			System.exit(1);
 		}
 		
 		try(InputStream in = new FileInputStream(configToUse)){
