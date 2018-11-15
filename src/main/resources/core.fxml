@@ -28,7 +28,7 @@
 				</Menu>
 				<Menu text="Edit">
 					<items>
-						<MenuItem text="Configuration" disable="true" />
+						<MenuItem text="Configuration" onAction="#handleConfigButton" />
 					</items>
 				</Menu>
 				<Menu text="View">
