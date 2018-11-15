@@ -12,7 +12,7 @@ public class ConfigHelper {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ConfigHelper.class);
 	private static final File PRODUCTION_CONFIG_LOCATION = new File("../config/config.yml");
-	private static final File DEBUG_CONFIG_LOCATION = new File("/src/dist/config/config.yml");
+	private static final File DEBUG_CONFIG_LOCATION = new File("src/dist/config/config.yml");
 	private static ConfigHelper configHelperInstance = null;
 	private static Configuration configInstance = null;
 	private static String configToUse = "";
@@ -20,6 +20,10 @@ public class ConfigHelper {
 	private static void initializeConfig() {
 		Yaml yaml = new Yaml();
 		LOGGER.debug("Opening config resource");
+		
+		if(DEBUG_CONFIG_LOCATION.exists()) {
+			System.out.println("heck");
+		}
 		
 		// Check for the production config and fallback to debug otherwise
 		LOGGER.debug("Checking for production configuration file");

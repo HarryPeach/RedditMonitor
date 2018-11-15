@@ -1,9 +1,47 @@
+# name: oauthClient
+# description: The OAuth token used to identify the client to Reddit
+# default: wB2mALpNvDm76g
 oauthClient: wB2mALpNvDm76g
+
+# name: nsfwFilteringEnabled
+# description: Whether or not to filter NSFW posts
+# default: true
 nsfwFilteringEnabled: true
+
+# name: alertSoundEnabled
+# description: Whether or not to play an alert sound when a matching post is found
+# default: true
 alertSoundEnabled: true
+
+# name: alertSoundVolume
+# description: The volume at which the alert sound should play, as a double
+# default: 0.2
 alertSoundVolume: 0.2
+
+# name: updateDelay
+# description: The delay between each time the program checks Reddit for new posts, in milliseconds
+# default: 2000
 updateDelay: 2000
+
+# name: notificationsEnabled
+# description: Whether or not to display pop-up notifications
+# default: true
 notificationsEnabled: true
+
+# name: keywordList
+# description: The keywords that the client should match posts aginst
+# default:
+# - giveaway
+# - steam key
+# - giving away
+# - cd key
+# - steam code
+# - cd code
+# - spare code
+# - spare key
+# - extra key
+# - extra code
+# - give away
 keywordList:
     - giveaway
     - steam key
@@ -16,10 +54,13 @@ keywordList:
     - extra key
     - extra code
     - give away
+
+# name: blacklistedSubreddits
+# description: Posts coming from these subreddits will not display in the post list
+# default: 
 blacklistedSubreddits:
-    - wholesomegifs
-    - childrenfallingover
-    - fffffffuuuuuuuuuuuu
+
+# name: blacklistedKeywords
+# description: Posts containing this set of keywords will not display in the post list
+# default: 
 blacklistedKeywords:
-    - fake
-    - us only
