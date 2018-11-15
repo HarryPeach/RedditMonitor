@@ -165,11 +165,9 @@ public class FXMLCoreController {
 				}
 				bw.close();
 			} catch (FileNotFoundException e) {
-				LOGGER.error("File not found when trying to export to CSV");
-				e.printStackTrace();
+				LOGGER.error("File not found when trying to export to CSV: " + e);
 			} catch (IOException e) {
-				LOGGER.error("IO Exception when trying to export to CSV");
-				e.printStackTrace();
+				LOGGER.error("IO Exception when trying to export to CSV: " + e);
 			}
 		}
 	}
@@ -335,8 +333,7 @@ public class FXMLCoreController {
 			LOGGER.debug("Attempting to open selected URL in the users browser");
 			Desktop.getDesktop().browse(new URI(url));
 		} catch (IOException | URISyntaxException e1) {
-			LOGGER.warn(e1.getMessage());
-			e1.printStackTrace();
+			LOGGER.warn("Exception opening URL in browser: " + e1);
 		}
 	}
 

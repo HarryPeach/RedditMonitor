@@ -109,8 +109,7 @@ public class UpdaterThread implements Runnable {
 		} catch (Exception e) {
 			Runnable updater = new Runnable() {
 				public void run() {
-					e.printStackTrace();
-					LOGGER.error(e.getMessage());
+					LOGGER.error("Exception when updating postList: " + e);
 					controllerInstance.restartThread();
 					if (Main.config.getConfigInstance().isNotificationsEnabled())
 						notifHelp.createNotification("Reddit Monitor",
