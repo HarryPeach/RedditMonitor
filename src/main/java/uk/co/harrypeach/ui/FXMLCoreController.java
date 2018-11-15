@@ -165,11 +165,9 @@ public class FXMLCoreController {
 				}
 				bw.close();
 			} catch (FileNotFoundException e) {
-				LOGGER.error("File not found when trying to export to CSV");
-				e.printStackTrace();
+				LOGGER.error("File not found when trying to export to CSV: " + e);
 			} catch (IOException e) {
-				LOGGER.error("IO Exception when trying to export to CSV");
-				e.printStackTrace();
+				LOGGER.error("IO Exception when trying to export to CSV: " + e);
 			}
 		}
 	}
@@ -272,58 +270,53 @@ public class FXMLCoreController {
 		});
 
 		// Open a context menu upon right-clicking items in the list
-//		postList.setCellFactory(lv -> {
-//			ListCell<Result> cell = new ListCell<>();
-//			ContextMenu contextMenu = new ContextMenu();
-//
-//			StringBinding stringBinding = new StringBinding() {
-//				{
-//					super.bind(cell.itemProperty().asString());
-//				}
-//
-//				@Override
-//				protected String computeValue() {
-//					if (cell.itemProperty().getValue() == null) {
-//						return "";
-//					}
-//					return cell.itemProperty().getValue().getTitle();
-//				}
-//			};
-//			cell.textProperty().bind(stringBinding);
-//
-//			MenuItem openPermalink = new MenuItem();
-//			openPermalink.textProperty().bind(Bindings.format("Open Permalink"));
-//			openPermalink.setOnAction(event -> {
-//				openUrlInBrowser(cell.getItem().getFullPostUrl());
-//			});
-//
-//			MenuItem openSubreddit = new MenuItem();
-//			openSubreddit.textProperty().bind(Bindings.format("Open Subreddit"));
-//			openSubreddit.setOnAction(event -> {
-//				openUrlInBrowser(cell.getItem().getFullSubreddit());
-//			});
-//
-//			MenuItem openURL = new MenuItem();
-//			openURL.textProperty().bind(Bindings.format("Open URL"));
-//			openURL.setOnAction(event -> {
-//				openUrlInBrowser(cell.getItem().getUrl());
-//			});
-//
-//			MenuItem deleteItem = new MenuItem();
-//			deleteItem.textProperty().bind(Bindings.format("Delete item"));
-//			deleteItem.setOnAction(event -> postList.getItems().remove(cell.getItem()));
-//			contextMenu.getItems().addAll(openPermalink, openSubreddit, openURL, deleteItem);
-//
-//			cell.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
-//				if (isNowEmpty) {
-//					cell.setContextMenu(null);
-//				} else {
-//					cell.setContextMenu(contextMenu);
-//				}
-//			});
-//
-//			return cell;
-//		});
+		postList.setCellFactory(lv -> {
+			ListCell< Result > cell = new ListCell<Result>(){
+				@Override
+	            protected void updateItem(Result item, boolean empty) {
+	                super.updateItem(item, empty);
+	                if (item != null) {
+	                    setText(item.getTitle());
+	                } else {
+	                    setText("");
+	                }
+	            }
+			};
+			ContextMenu contextMenu = new ContextMenu();
+
+			MenuItem openPermalink = new MenuItem();
+			openPermalink.textProperty().bind(Bindings.format("Open Permalink"));
+			openPermalink.setOnAction(event -> {
+				openUrlInBrowser(cell.getItem().getFullPostUrl());
+			});
+
+			MenuItem openSubreddit = new MenuItem();
+			openSubreddit.textProperty().bind(Bindings.format("Open Subreddit"));
+			openSubreddit.setOnAction(event -> {
+				openUrlInBrowser(cell.getItem().getFullSubreddit());
+			});
+
+			MenuItem openURL = new MenuItem();
+			openURL.textProperty().bind(Bindings.format("Open URL"));
+			openURL.setOnAction(event -> {
+				openUrlInBrowser(cell.getItem().getUrl());
+			});
+
+			MenuItem deleteItem = new MenuItem();
+			deleteItem.textProperty().bind(Bindings.format("Delete item"));
+			deleteItem.setOnAction(event -> postList.getItems().remove(cell.getItem()));
+			contextMenu.getItems().addAll(openPermalink, openSubreddit, openURL, deleteItem);
+
+			cell.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
+				if (isNowEmpty) {
+					cell.setContextMenu(null);
+				} else {
+					cell.setContextMenu(contextMenu);
+				}
+			});
+
+			return cell;
+		});
 
 	}
 	
@@ -335,8 +328,7 @@ public class FXMLCoreController {
 			LOGGER.debug("Attempting to open selected URL in the users browser");
 			Desktop.getDesktop().browse(new URI(url));
 		} catch (IOException | URISyntaxException e1) {
-			LOGGER.warn(e1.getMessage());
-			e1.printStackTrace();
+			LOGGER.warn("Exception opening URL in browser: " + e1);
 		}
 	}
 
