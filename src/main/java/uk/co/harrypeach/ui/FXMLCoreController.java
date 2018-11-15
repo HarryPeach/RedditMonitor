@@ -14,7 +14,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import javafx.beans.binding.Bindings;
-import javafx.beans.binding.StringBinding;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
@@ -284,28 +283,28 @@ public class FXMLCoreController {
 			};
 			ContextMenu contextMenu = new ContextMenu();
 
-			MenuItem openPermalink = new MenuItem();
-			openPermalink.textProperty().bind(Bindings.format("Open Permalink"));
-			openPermalink.setOnAction(event -> {
+			MenuItem openPermalinkItem = new MenuItem();
+			openPermalinkItem.setText("Open Permalink");
+			openPermalinkItem.setOnAction(event -> {
 				openUrlInBrowser(cell.getItem().getFullPostUrl());
 			});
 
-			MenuItem openSubreddit = new MenuItem();
-			openSubreddit.textProperty().bind(Bindings.format("Open Subreddit"));
-			openSubreddit.setOnAction(event -> {
+			MenuItem openSubredditItem = new MenuItem();
+			openSubredditItem.setText("Open Subreddit");
+			openSubredditItem.setOnAction(event -> {
 				openUrlInBrowser(cell.getItem().getFullSubreddit());
 			});
 
-			MenuItem openURL = new MenuItem();
-			openURL.textProperty().bind(Bindings.format("Open URL"));
-			openURL.setOnAction(event -> {
+			MenuItem openUrlItem = new MenuItem();
+			openUrlItem.setText("Open URL");
+			openUrlItem.setOnAction(event -> {
 				openUrlInBrowser(cell.getItem().getUrl());
 			});
 
 			MenuItem deleteItem = new MenuItem();
-			deleteItem.textProperty().bind(Bindings.format("Delete item"));
+			deleteItem.setText("Delete item");
 			deleteItem.setOnAction(event -> postList.getItems().remove(cell.getItem()));
-			contextMenu.getItems().addAll(openPermalink, openSubreddit, openURL, deleteItem);
+			contextMenu.getItems().addAll(openPermalinkItem, openSubredditItem, openUrlItem, deleteItem);
 
 			cell.emptyProperty().addListener((obs, wasEmpty, isNowEmpty) -> {
 				if (isNowEmpty) {
