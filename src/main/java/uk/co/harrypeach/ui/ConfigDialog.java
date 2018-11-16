@@ -2,7 +2,10 @@ package uk.co.harrypeach.ui;
 
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.geometry.Insets;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonBar;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.CheckBox;
@@ -33,6 +36,9 @@ public class ConfigDialog extends Dialog<String> {
 	private Separator delaySeparator = new Separator();
 	private Label delayTextFieldLabel = new Label("Update delay");
 	private TextField delayTextField = new TextField();
+
+	private Separator saveSeparator = new Separator();
+	private Button saveButton = new Button("Save");
 
 	private Separator bottomSeparator = new Separator();
 	private Label infoLabel = new Label("More advanced options are available in your config.yml");
@@ -78,17 +84,26 @@ public class ConfigDialog extends Dialog<String> {
 			}
 		});
 
+		saveSeparator.setPadding(new Insets(10, 0, 10, 0));
+		saveButton.setOnAction(new EventHandler<ActionEvent>() {
+			@Override
+			public void handle(ActionEvent e) {
+				saveConfigFromUi();
+			}
+		});
+
 		bottomSeparator.setPadding(new Insets(10, 0, 10, 0));
 
 		VBox vbox = new VBox();
 		vbox.getChildren().addAll(nsfwFilteringCheckbox, alertSoundCheckbox, notificationsCheckbox, volumeSeparator,
-				volumeGrid, delaySeparator, delayTextFieldLabel, delayTextField, bottomSeparator, infoLabel);
+				volumeGrid, delaySeparator, delayTextFieldLabel, delayTextField, saveSeparator, saveButton,
+				bottomSeparator, infoLabel);
 
 		loadUiFromConfig();
 		getDialogPane().setContent(vbox);
 
-		ButtonType okButton = new ButtonType("Save", ButtonBar.ButtonData.OK_DONE);
-		getDialogPane().getButtonTypes().addAll(okButton, ButtonType.CANCEL);
+		ButtonType okButton = new ButtonType("Done", ButtonBar.ButtonData.OK_DONE);
+		getDialogPane().getButtonTypes().addAll(okButton);
 	}
 
 	/**
@@ -100,6 +115,13 @@ public class ConfigDialog extends Dialog<String> {
 		notificationsCheckbox.setSelected(Main.config.getConfigInstance().isNotificationsEnabled());
 		volumeSlider.setValue(Main.config.getConfigInstance().getAlertSoundVolume());
 		delayTextField.setText(String.valueOf(Main.config.getConfigInstance().getUpdateDelay()));
+	}
+	
+	/**
+	 * Saves the settings from the UI to the config file
+	 */
+	private void saveConfigFromUi() {
+		// TODO: Implement this, then reload config
 	}
 
 }
