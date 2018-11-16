@@ -10,6 +10,7 @@ import javafx.scene.control.Dialog;
 import javafx.scene.control.Label;
 import javafx.scene.control.Separator;
 import javafx.scene.control.Slider;
+import javafx.scene.control.TextField;
 import javafx.scene.control.Tooltip;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
@@ -23,12 +24,17 @@ public class ConfigDialog extends Dialog<String> {
 	private CheckBox alertSoundCheckbox = new CheckBox("Play alert sounds");
 	private CheckBox notificationsCheckbox = new CheckBox("Enable pop-up notifications");
 
-	private GridPane volumeGrid = new GridPane();
 	private Separator volumeSeparator = new Separator();
+	private GridPane volumeGrid = new GridPane();
 	private Label volumeSliderInfoLabel = new Label("Alert volume");
 	private Slider volumeSlider = new Slider(0, 1, 0.2);
 	private Label volumeSliderLabel = new Label(Double.toString(volumeSlider.getValue()));
 
+	private Separator delaySeparator = new Separator();
+	private Label delayTextFieldLabel = new Label("Update delay");
+	private TextField delayTextField = new TextField();
+
+	private Separator bottomSeparator = new Separator();
 	private Label infoLabel = new Label("More advanced options are available in your config.yml");
 
 	public ConfigDialog() {
@@ -58,9 +64,25 @@ public class ConfigDialog extends Dialog<String> {
 			}
 		});
 
+		String delayTooltip = "The delay between each time the program checks Reddit for new posts, in milliseconds";
+		delaySeparator.setPadding(new Insets(10, 0, 10, 0));
+		delayTextFieldLabel.setTooltip(new Tooltip(delayTooltip));
+		delayTextField.setTooltip(new Tooltip(delayTooltip));
+		// Make the TextField only allow numbers
+		// Adapted from https://stackoverflow.com/a/30796829/6688815
+		delayTextField.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				if (!newValue.matches("\\d*"))
+					delayTextField.setText(newValue.replaceAll("[^\\d]", ""));
+			}
+		});
+
+		bottomSeparator.setPadding(new Insets(10, 0, 10, 0));
+
 		VBox vbox = new VBox();
 		vbox.getChildren().addAll(nsfwFilteringCheckbox, alertSoundCheckbox, notificationsCheckbox, volumeSeparator,
-				volumeGrid, infoLabel);
+				volumeGrid, delaySeparator, delayTextFieldLabel, delayTextField, bottomSeparator, infoLabel);
 
 		loadUiFromConfig();
 		getDialogPane().setContent(vbox);
@@ -77,6 +99,7 @@ public class ConfigDialog extends Dialog<String> {
 		alertSoundCheckbox.setSelected(Main.config.getConfigInstance().isAlertSoundEnabled());
 		notificationsCheckbox.setSelected(Main.config.getConfigInstance().isNotificationsEnabled());
 		volumeSlider.setValue(Main.config.getConfigInstance().getAlertSoundVolume());
+		delayTextField.setText(String.valueOf(Main.config.getConfigInstance().getUpdateDelay()));
 	}
 
 }
