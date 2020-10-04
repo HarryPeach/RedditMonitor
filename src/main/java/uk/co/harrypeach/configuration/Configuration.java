@@ -1,5 +1,6 @@
 package uk.co.harrypeach.configuration;
 
+import java.util.Collections;
 import java.util.List;
 
 public class Configuration {
@@ -63,6 +64,8 @@ public class Configuration {
 	 * @return
 	 */
 	public List<String> getKeywordList() {
+		if(keywordList == null)
+			return Collections.<String>emptyList();
 		return keywordList;
 	}
 	public void setKeywordList(List<String> keywordList) {
@@ -85,6 +88,8 @@ public class Configuration {
 	 * @return
 	 */
 	public List<String> getBlacklistedSubreddits() {
+		if(blacklistedSubreddits == null)
+			return Collections.<String>emptyList();
 		return blacklistedSubreddits;
 	}
 	public void setBlacklistedSubreddits(List<String> blacklistedSubreddits) {
@@ -107,6 +112,8 @@ public class Configuration {
 	 * @return
 	 */
 	public List<String> getBlacklistedKeywords() {
+		if(blacklistedKeywords == null)
+			return Collections.<String>emptyList();
 		return blacklistedKeywords;
 	}
 	public void setBlacklistedKeywords(List<String> blacklistedKeywords) {
